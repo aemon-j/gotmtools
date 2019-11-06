@@ -1,0 +1,40 @@
+Package: gotmtools
+Type: Package
+Title: Tools to work with GOTM input data and also process the output data
+Version: 0.1.0
+Author: Tadhg Moore
+Maintainer: Tadhg Moore <tadhg.moore@dkit.ie>
+Description: Easily visualise inputs for GOTM and allow interaction with editing GOTM input files.
+    Works in tandem with GOTMr to easily document your modelling workflow. Easy to extract data from the netCDF files and compare modelled data to field data.
+License: GPL3
+Depends:
+    R (>= 3.0),
+	GOTMr,
+    rLakeAnalyzer (>= 1.8.3)
+Imports:
+    ncdf4,
+    tools,
+    akima,
+    lazyeval,
+    dplyr,
+    ggplot2,
+	hydroGOF,
+	glmtools,
+	reshape2,
+	RSQLite,
+	XML,
+	MBA,
+	colorRamps,
+	lubridate,
+	tidyr,
+	RColorBrewer,
+	gridExtra,
+	readr,
+	zoo
+Suggests:
+    testthat,
+    knitr,
+    rmarkdown
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.1
