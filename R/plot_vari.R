@@ -15,8 +15,15 @@
 #' @export
 plot_vari <- function(ncdf, var, ...){
   vari <- get_vari(ncdf = ncdf, var = var)
-  z = get_vari(ncdf = ncdf, var = 'z')
-  tmp = wide2long(vari,z)
+  z = get_vari(ncdf = ncdf, var = "z")
+  flag = dim(z)
+  if(length(flag) == 1){
+    deps = rep(z, nrow(vari), ncol = length(z), byrow = TRUE)
+    mat = matrix(rep(z, nrow(vari)), nrow = nrow(vari), ncol = length(z), byrow = TRUE)
+    z <- vari
+    z[,-1] <- mat
+  }
+  tmp = wide2long(vari, z)
   p1 = long_heatmap(tmp, ...)
   return(p1)
 }

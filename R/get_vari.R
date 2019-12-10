@@ -19,24 +19,26 @@
 #' @export
 get_vari <- function(ncdf, var, print = T){
   fid = nc_open(ncdf)
-  tim = ncvar_get(fid, "time")
-  tunits = ncatt_get(fid, "time")
-  lnam = tunits$long_name
-  tustr <- strsplit(tunits$units, " ")
-  step = tustr[[1]][1]
-  tdstr <- strsplit(unlist(tustr)[3], "-")
-  tmonth <- as.integer(unlist(tdstr)[2])
-  tday <- as.integer(unlist(tdstr)[3])
-  tyear <- as.integer(unlist(tdstr)[1])
-  origin = as.POSIXct(paste0(tyear, "-", tmonth, "-",
-                             tday), format = "%Y-%m-%d", tz = "UTC")
-  time = as.POSIXct(tim, origin = origin, tz = "UTC")
+  if(incl_time){
+    tim = ncvar_get(fid, "time")
+    tunits = ncatt_get(fid, "time")
+    lnam = tunits$long_name
+    tustr <- strsplit(tunits$units, " ")
+    step = tustr[[1]][1]
+    tdstr <- strsplit(unlist(tustr)[3], "-")
+    tmonth <- as.integer(unlist(tdstr)[2])
+    tday <- as.integer(unlist(tdstr)[3])
+    tyear <- as.integer(unlist(tdstr)[1])
+    origin = as.POSIXct(paste0(tyear, "-", tmonth, "-",
+                               tday), format = "%Y-%m-%d", tz = "UTC")
+    time = as.POSIXct(tim, origin = origin, tz = "UTC")
+  }
   var1 = ncvar_get(fid, var)
   tunits = ncatt_get(fid, var)
   nc_close(fid)
   lnam = tunits$long_name
-  dims = strsplit(tunits$coordinates, " ")[[1]]
-  if (length(dims) == 3) {
+  dims = dim(var1)
+  if (length(dims) == 2) {
     flag <- which(dim(var1) == length(time))
     if(flag == 2){
       var1 = as.data.frame(t(var1))
@@ -44,15 +46,19 @@ get_vari <- function(ncdf, var, print = T){
       var1 <- as.data.frame(var1)
     }
     var1 <- var1[, ncol(var1):1]
-    var1$Datetime <- time
-    var1 <- var1[, c(ncol(var1), 1:(ncol(var1) - 1))]
-  }else if (length(dims) == 2) {
-    var1 <- data.frame(time, var1)
+    if(incl_time){
+      var1$Datetime <- time
+      var1 <- var1[, c(ncol(var1), 1:(ncol(var1) - 1))]
+    }
+  }else if (length(dims) == 1) {
+    if(incl_time){
+      var1 <- data.frame(time, var1)
+    }
   }
   mat = matrix(data = c(var, lnam, tunits$units, tunits$coordinates),
                dimnames = list(c("short_name", "long_name",
                                  "units", "dimensions"), c()))
-  if (print == T) {
+  if (print == TRUE) {
     message("Extracted ", var, " from ", ncdf)
     print(mat)
   }
