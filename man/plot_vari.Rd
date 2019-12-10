@@ -4,12 +4,14 @@
 \alias{plot_vari}
 \title{Plot any variable from netcdf file}
 \usage{
-plot_vari(ncdf, var, ...)
+plot_vari(ncdf, var, incl_time = TRUE, ...)
 }
 \arguments{
 \item{ncdf}{filepath; to the netCDF file to extract variable}
 
 \item{var}{character; Name of the variable to be extracted. Must match short name in netCDF file}
+
+\item{incl_time}{boolean; Add time to the first column in the dataframe. Defaults to TRUE}
 
 \item{...}{other arguments to be passed to long_heatmap}
 }

@@ -4,6 +4,7 @@
 #'
 #' @param ncdf filepath; Name of the netCDF file to extract variable
 #' @param var character; Name of the variable to be extracted. Must match short name in netCDF file
+#' @param incl_time boolean; Add time to the first column in the dataframe. Defaults to TRUE
 #' @param print logical; Print the name and units of the variable extracted, defaults to TRUE
 #' @return dataframe in the same format as the observation file with the surface in the top column and the bottom in the last column.
 #' @importFrom ncdf4 nc_open
@@ -17,7 +18,7 @@
 #' wtemp <- get_vari(ncdf = out, var = 'temp')
 #' z <- get_vari(ncdf = out, var = 'z')
 #' @export
-get_vari <- function(ncdf, var, print = T){
+get_vari <- function(ncdf, var, incl_time = TRUE, print = TRUE){
   fid = nc_open(ncdf)
   if(incl_time){
     tim = ncvar_get(fid, "time")

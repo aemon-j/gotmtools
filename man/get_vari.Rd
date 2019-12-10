@@ -4,12 +4,14 @@
 \alias{get_vari}
 \title{Extract variables from NetCDF file}
 \usage{
-get_vari(ncdf, var, print = T)
+get_vari(ncdf, var, incl_time = TRUE, print = TRUE)
 }
 \arguments{
 \item{ncdf}{filepath; Name of the netCDF file to extract variable}
 
 \item{var}{character; Name of the variable to be extracted. Must match short name in netCDF file}
+
+\item{incl_time}{boolean; Add time to the first column in the dataframe. Defaults to TRUE}
 
 \item{print}{logical; Print the name and units of the variable extracted, defaults to TRUE}
 }
