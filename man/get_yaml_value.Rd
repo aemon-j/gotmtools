@@ -21,7 +21,8 @@ get_yaml_value(file = "gotm.yaml", label, key)
 Inputs values into yaml file by locating the label and key within the yaml file. Preserves comments (#) if present. NOTE: this does not use a yaml parser so if there are yaml formatting errors this function will not pick them up.
 }
 \examples{
-get_yaml_value(file = 'gotm.yaml', label = 'airp', key = 'file')
+yaml_file <- system.file('extdata/gotm.yaml', package = 'GOTMr')
+get_yaml_value(file = yaml_file, label = 'airp', key = 'file')
 }
 \author{
 Tadhg Moore

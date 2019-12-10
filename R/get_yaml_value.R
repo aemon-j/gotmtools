@@ -10,14 +10,11 @@
 #' @author
 #'Tadhg Moore
 #' @examples
-#'get_yaml_value(file = 'gotm.yaml', label = 'airp', key = 'file')
+#' yaml_file <- system.file('extdata/gotm.yaml', package = 'GOTMr')
+#' get_yaml_value(file = yaml_file, label = 'airp', key = 'file')
 
 get_yaml_value <- function(file = 'gotm.yaml', label, key){
   yml <- readLines(file)
-
-  if(is.null(out_file)){
-    out_file = file
-  }
 
   #Find index of label
   label_id <- paste0(label,':')
@@ -52,7 +49,9 @@ get_yaml_value <- function(file = 'gotm.yaml', label, key){
   if(val == 'true'){
     val2 = TRUE
   }
-  flg <- !is.na(as.numeric(val))
+  flg <- TRUE
+  flg <- tryCatch({!is.na(as.numeric(val))},
+                  warning = function(x)return(FALSE))
   if(flg){
     val2 = as.numeric(val)
   }
