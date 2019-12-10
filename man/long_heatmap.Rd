@@ -2,13 +2,13 @@
 % Please edit documentation in R/long_heatmap.R
 \name{long_heatmap}
 \alias{long_heatmap}
-\title{Create heatmap from observed files for acpy}
+\title{Create heatmap from dataerved files for acpy}
 \usage{
-long_heatmap(obs, title = "Heatmap", ylim = NULL, xlim = NULL,
+long_heatmap(data, title = "Heatmap", ylim = NULL, xlim = NULL,
   size = 1, zlab = "", ...)
 }
 \arguments{
-\item{obs}{dataframe; observations loaded with load.obs}
+\item{data}{dataframe; dataervations loaded with load.data}
 
 \item{title}{character; Title of the graph. Defaults to 'Heatmap'}
 
@@ -23,4 +23,13 @@ Plot of interpolated heatmap
 This function runs creates an interpolated heatmap from ACPy input files.
 The level of interpolation can be adjusted to increase the accuracy
 of the plot.
+}
+\examples{
+sim_folder <- system.file('extdata', package = 'GOTMr')
+run_gotm(sim_folder)
+out <- file.path(sim_folder, 'output', 'output.nc')
+wtemp <- get_vari(ncdf = out, var = 'temp')
+z <- get_vari(ncdf = out, var = 'z')
+df <- wide2long(data = wtemp, depths = z)
+long_heatmap(data = df, title = 'Feeagh simulated temp', zlab = 'degC')
 }

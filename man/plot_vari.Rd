@@ -4,10 +4,10 @@
 \alias{plot_vari}
 \title{Plot any variable from netcdf file}
 \usage{
-plot_vari(file, var, ...)
+plot_vari(ncdf, var, ...)
 }
 \arguments{
-\item{file}{file; File path to netcdf file}
+\item{ncdf}{filepath; to the netCDF file to extract variable}
 
 \item{var}{character; Name of the variable to be extracted. Must match short name in netCDF file}
 
@@ -18,4 +18,10 @@ ggplot object; filled point plot of water temperature
 }
 \description{
 Extracts modelled water temperature from netcdf file and plots it using long_heatmap function
+}
+\examples{
+sim_folder <- system.file('extdata', package = 'GOTMr')
+run_gotm(sim_folder)
+out <- file.path(sim_folder, 'output', 'output.nc')
+plot_vari(ncdf = out, var = 'temp')
 }
