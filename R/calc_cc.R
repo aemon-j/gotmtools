@@ -8,15 +8,25 @@
 #' @param dewt vector; Dewpoint temperature values which correspond to the vector of dates. Used instead of relative humidity
 #' @param swr vector; Short-wave radiation values which correspond to the vector of dates
 #' @param lat numeric; Latitude position (in decimal)
-#' @param long numeric; Longitude position (in decimal)
+#' @param lon numeric; Longitude position (in decimal)
 #' @param elev numeric; elevation in metres above sea level
 #' @param daily logical; Is the data on a daily timestep. Defaults to FALSE
 #' @return vector of cloud cover values which correspond to the vector of dates supplied
+#' @examples
+#'  met_file <- system.file('extdata/met_file.dat', package = 'GOTMr')
+#'  swr_file <- system.file('extdata/swr_input_file.dat', package = 'GOTMr')
+#'  met <- read.delim(met_file)
+#'  met[,1] <- as.POSIXct(met[,1], tz = 'UTC')
+#'  swr <- read.delim(swr_file)
+#'  swr[,1] <- as.POSIXct(swr[,1], tz = 'UTC')
+#'  met <- merge(met, swr, by = 1)
+#'  cc <- calc_cc(date = met[,1], airt = met$AirT, dewt = met$DewT, swr = met$SWR, lat = 53, lon = -9.5, elev = 14, daily = F)
+#'  plot(cc)
 #' @importFrom stats aggregate
 #' @importFrom zoo na.approx
 #' @export
 
-calc_cc <- function(date, airt, relh = NULL, dewt = NULL, swr, lat, long, elev, daily =F){
+calc_cc <- function(date, airt, relh = NULL, dewt = NULL, swr, lat, lon, elev, daily =F){
   if(daily == T){
     date = seq.POSIXt(from = date[1], to = (date[length(date)] +23*60*60), by = '1 hour')
   }
@@ -25,7 +35,7 @@ calc_cc <- function(date, airt, relh = NULL, dewt = NULL, swr, lat, long, elev, 
   hour[hour == 0] <- 24
 
   std.mer = seq(-90,90, 15)
-  Lsm = std.mer[which.min(abs(long - std.mer))] # Local standard meridian (degrees)
+  Lsm = std.mer[which.min(abs(lon - std.mer))] # Local standard meridian (degrees)
 
   Hsc = 1390 # Solar constant (W/m2)
   cd = 0.06 # Dust coefficient
@@ -38,7 +48,7 @@ calc_cc <- function(date, airt, relh = NULL, dewt = NULL, swr, lat, long, elev, 
 
   d = 23.45 * pi/180 * cos((2*pi/365)*(172-yday)) # Declination of the sun
 
-  dts = (1/15) * (Lsm-long) # Fraction of 15-degree increment Llm is east of Lsm
+  dts = (1/15) * (Lsm-lon) # Fraction of 15-degree increment Llm is east of Lsm
   value = (sin(theta)*sin(d))
   value = value/(cos(theta)*cos(d))
   tss = (12/pi) * acos(-value) + dts + 12 # Time of sunset

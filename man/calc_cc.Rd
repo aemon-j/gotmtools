@@ -4,7 +4,7 @@
 \alias{calc_cc}
 \title{Calculate cloud cover}
 \usage{
-calc_cc(date, airt, relh = NULL, dewt = NULL, swr, lat, long, elev,
+calc_cc(date, airt, relh = NULL, dewt = NULL, swr, lat, lon, elev,
   daily = F)
 }
 \arguments{
@@ -20,7 +20,7 @@ calc_cc(date, airt, relh = NULL, dewt = NULL, swr, lat, long, elev,
 
 \item{lat}{numeric; Latitude position (in decimal)}
 
-\item{long}{numeric; Longitude position (in decimal)}
+\item{lon}{numeric; Longitude position (in decimal)}
 
 \item{elev}{numeric; elevation in metres above sea level}
 
@@ -31,4 +31,15 @@ vector of cloud cover values which correspond to the vector of dates supplied
 }
 \description{
 Calculate cloud cover using latitude, air temperature, relative humidity (or dewpoint temperature) and short wave radiation using the calculations from Martin and McCutcheon (1999).
+}
+\examples{
+ met_file <- system.file('extdata/met_file.dat', package = 'GOTMr')
+ swr_file <- system.file('extdata/swr_input_file.dat', package = 'GOTMr')
+ met <- read.delim(met_file)
+ met[,1] <- as.POSIXct(met[,1], tz = 'UTC')
+ swr <- read.delim(swr_file)
+ swr[,1] <- as.POSIXct(swr[,1], tz = 'UTC')
+ met <- merge(met, swr, by = 1)
+ cc <- calc_cc(date = met[,1], airt = met$AirT, dewt = met$DewT, swr = met$SWR, lat = 53, lon = -9.5, elev = 14, daily = F)
+ plot(cc)
 }
