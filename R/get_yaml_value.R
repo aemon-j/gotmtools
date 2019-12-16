@@ -12,7 +12,8 @@
 #' @examples
 #' yaml_file <- system.file('extdata/gotm.yaml', package = 'GOTMr')
 #' get_yaml_value(file = yaml_file, label = 'airp', key = 'file')
-
+#' @export
+#' 
 get_yaml_value <- function(file = 'gotm.yaml', label, key){
   yml <- readLines(file)
 
@@ -39,7 +40,12 @@ get_yaml_value <- function(file = 'gotm.yaml', label, key){
   #Split to extract comment
   spl1 <- strsplit(yml[ind_map], c('#'))[[1]]
   spl2 <- strsplit(spl1[1], ': ')[[1]][2]
-  val <- gsub(" ", "", spl2, fixed = TRUE)
+  if(grepl(':', spl2)){
+    spl3 = strsplit(spl2, ' ')[[1]]
+    val = paste(spl3[1], spl3[2])
+  }else{
+    val <- gsub(" ", "", spl2, fixed = TRUE)
+  }
 
   val2 <- NULL
 
