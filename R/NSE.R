@@ -9,11 +9,25 @@
 #'
 #' @param sim  numeric 'data.frame', 'matrix' or 'vector' with simulated values
 #' @param obs numeric 'data.frame', 'matrix' or 'vector' with observed values
+#' @param na,rm boolean; a logical value indicating whether NA values should be stripped before the computation proceeds. Defaults to FALSE
 #' @return data frame of normalized modelled depths
 #' @import utils
 #' @export
 
-NSE <-function(sim, obs, ...) UseMethod("NSE")
+NSE <-function(sim, obs, na.rm = FALSE){
+  denominator <- sum( (obs - mean(obs, na.rm = na.rm))^2 , na.rm = na.rm)
+
+  if (denominator != 0) {
+
+    NS <- 1 - ( sum( (obs - sim)^2, na.rm = na.rm) / denominator )
+
+  } else {
+    NS <- NA
+    warning("'sum((obs - mean(obs))^2)=0' => it is not possible to compute 'NSE'")
+  } # ELSE end
+
+  return(NS)
+}
 
 NSE.default <- function (sim, obs, na.rm=TRUE, FUN=NULL, epsilon=c(0, "Pushpalatha2012", "other"), epsilon.value=NA, ...){
 
