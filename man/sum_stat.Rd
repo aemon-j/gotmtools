@@ -7,7 +7,7 @@
 sum_stat(mod, obs, depth = F, na.rm = T, depth.range = NULL)
 }
 \arguments{
-\item{mod}{vector or dataframe; Vector if no depth values otherwise Modelled values in the long format. i.e. same as observed in ACPy}
+\item{mod}{vector or dataframe; Vector if no depth values otherwise Modelled values in the long format. i.e. same as observed in `parsac`}
 
 \item{obs}{vector or dataframe; Vector if no depth values otherwise Observed values in the long format loaded in using load.obs}
 

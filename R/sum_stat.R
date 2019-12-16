@@ -2,7 +2,7 @@
 #'
 #' Calculate general summary statistics of modelled water temperature vs observed water temperature; Pearson's R, variance, covariance, bias, Nash-Sutcliffe Efficiency (NSE) and Root mean squared error (RMSE).
 #'
-#' @param mod vector or dataframe; Vector if no depth values otherwise Modelled values in the long format. i.e. same as observed in ACPy
+#' @param mod vector or dataframe; Vector if no depth values otherwise Modelled values in the long format. i.e. same as observed in `parsac`
 #' @param obs vector or dataframe; Vector if no depth values otherwise Observed values in the long format loaded in using load.obs
 #' @param depth logical; Depth values are included. Defaults to False
 #' @param na.rm logical; Remove NA'values
@@ -16,18 +16,20 @@ sum_stat <- function(mod, obs, depth =F,na.rm =T, depth.range =NULL){
       obs = obs[(obs[,2] <= depth.range[1] & obs[,2] >= depth.range[2]),]
       mod = mod[(mod[,2] <= depth.range[1] & mod[,2] >= depth.range[2]),]
     }
-    dif = mod[,3]- obs[,3]
-    pear_r = cor.test(obs[,3], mod[,3], method = 'pearson')
-    var_obs = mean(((obs[,3]-mean(obs[,3], na.rm = na.rm))^2), na.rm = na.rm)
-    var_mod = mean(((mod[,3]-mean(mod[,3], na.rm = na.rm))^2), na.rm = na.rm)
-    SD_obs = sd(obs[,3], na.rm = na.rm)
-    SD_mod = sd(mod[,3], na.rm = na.rm)
-    cov = mean((obs[,3]-mean(obs[,3], na.rm = na.rm))*(mod[,3]-mean(mod[,3], na.rm = na.rm)), na.rm = na.rm)
+    df <- merge(mod, obs, by = c(1,2))
+    colnames(df)[3:4] <- c('mod', 'obs')
+    dif = df$mod - df$obs
+    pear_r = cor.test(df$obs, df$mod, method = 'pearson')
+    var_obs = mean(((df$obs-mean(df$obs, na.rm = na.rm))^2), na.rm = na.rm)
+    var_mod = mean(((df$mod-mean(df$mod, na.rm = na.rm))^2), na.rm = na.rm)
+    SD_obs = sd(df$obs, na.rm = na.rm)
+    SD_mod = sd(df$mod, na.rm = na.rm)
+    cov = mean((df$obs-mean(df$obs, na.rm = na.rm))*(df$mod-mean(df$mod, na.rm = na.rm)), na.rm = na.rm)
     cor = cov/sqrt(var_obs*var_mod)
     bias = mean(dif, na.rm = na.rm)
     mae = mean(abs(dif), na.rm = na.rm)
     rmse = sqrt(mean(dif^2, na.rm = na.rm))
-    nse = NSE(mod[,3], obs[,3], na.rm = na.rm)
+    nse = NSE(df$mod, df$obs, na.rm = na.rm)
     summary_stats = data.frame(Pearson_r = pear_r$estimate,Variance_obs = var_obs,
                                Variance_mod = var_mod, SD_obs = SD_obs, SD_mod = SD_mod,
                                Covariance = cov, #Correlation =cor,
@@ -45,7 +47,7 @@ sum_stat <- function(mod, obs, depth =F,na.rm =T, depth.range =NULL){
     bias = mean(dif, na.rm = na.rm)
     mae = mean(abs(dif), na.rm = na.rm)
     rmse = sqrt(mean(dif^2, na.rm = na.rm))
-    nse = NSE(mod, obs)
+    nse = NSE(mod, obs, na.rm = na.rm)
     summary_stats = data.frame(Pearson_r = pear_r$estimate,Variance_obs = var_obs,
                                Variance_mod = var_mod, SD_obs = SD_obs, SD_mod = SD_mod,
                                Covariance = cov, #Correlation =cor,
