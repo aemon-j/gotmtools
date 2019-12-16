@@ -27,7 +27,7 @@ sum_stat <- function(mod, obs, depth =F,na.rm =T, depth.range =NULL){
     bias = mean(dif, na.rm = na.rm)
     mae = mean(abs(dif), na.rm = na.rm)
     rmse = sqrt(mean(dif^2, na.rm = na.rm))
-    nse = NSE(mod[,3], obs[,3])
+    nse = NSE(mod[,3], obs[,3], na.rm = na.rm)
     summary_stats = data.frame(Pearson_r = pear_r$estimate,Variance_obs = var_obs,
                                Variance_mod = var_mod, SD_obs = SD_obs, SD_mod = SD_mod,
                                Covariance = cov, #Correlation =cor,
