@@ -4,10 +4,14 @@
 #'
 #' @param sim  numeric 'data.frame', 'matrix' or 'vector' with simulated values
 #' @param obs numeric 'data.frame', 'matrix' or 'vector' with observed values
+#' @param na,rm boolean; a logical value indicating whether NA values should be stripped before the computation proceeds. Defaults to FALSE
 #' @return value
 #' @export
 
-rmse <-function(sim, obs, ...) UseMethod("rmse")
+rmse <-function(sim, obs, na.rm = FALSE){
+  rmse <- sqrt( mean( (sim - obs)^2, na.rm = na.rm) )
+  return(rmse)
+}
 
 rmse.default <- function (sim, obs, na.rm=TRUE, ...) {
 

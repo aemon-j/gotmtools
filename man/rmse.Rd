@@ -4,12 +4,14 @@
 \alias{rmse}
 \title{Root Mean Square Error}
 \usage{
-rmse(sim, obs, ...)
+rmse(sim, obs, na.rm = FALSE)
 }
 \arguments{
 \item{sim}{numeric 'data.frame', 'matrix' or 'vector' with simulated values}
 
 \item{obs}{numeric 'data.frame', 'matrix' or 'vector' with observed values}
+
+\item{na, rm}{boolean; a logical value indicating whether NA values should be stripped before the computation proceeds. Defaults to FALSE}
 }
 \value{
 value
