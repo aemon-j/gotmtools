@@ -7,6 +7,7 @@
 #' @param size numeric; size of points in plot. Defaults to 0.1
 #' @param ggplot logical; plot in ggplot or base plot. Defaults to TRUE
 #' @param colourblind logical; Use colourblind friendly colours. Defaults to TRUE
+#' @param na,rm boolean; a logical value indicating whether NA values should be stripped before the computation proceeds. Defaults to FALSE
 #' @return grob object which can be assigned and then saved using ggsave() function
 #' @importFrom RColorBrewer brewer.pal
 #' @importFrom grDevices colorRamp
@@ -14,8 +15,8 @@
 #' @import stats
 #' @import graphics
 #' @export
-diag_plots <- function(mod, obs, size = 0.1, ggplot = TRUE, colourblind = TRUE){
-  stats = sum_stat(mod, obs, depth = T)
+diag_plots <- function(mod, obs, size = 0.1, ggplot = TRUE, colourblind = TRUE, na.rm = FALSE){
+  stats = sum_stat(mod, obs, depth = T, na.rm = na.rm)
   if(max(mod[,2]) > 0){ #Makes depths negative
     mod[,2] <- -mod[,2]
   }

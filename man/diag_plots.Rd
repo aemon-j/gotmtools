@@ -4,7 +4,8 @@
 \alias{diag_plots}
 \title{Produces model diagnostic plots}
 \usage{
-diag_plots(mod, obs, size = 0.1, ggplot = TRUE, colourblind = TRUE)
+diag_plots(mod, obs, size = 0.1, ggplot = TRUE, colourblind = TRUE,
+  na.rm = FALSE)
 }
 \arguments{
 \item{mod}{dataframe; modelled values in long format.}
@@ -16,6 +17,8 @@ diag_plots(mod, obs, size = 0.1, ggplot = TRUE, colourblind = TRUE)
 \item{ggplot}{logical; plot in ggplot or base plot. Defaults to TRUE}
 
 \item{colourblind}{logical; Use colourblind friendly colours. Defaults to TRUE}
+
+\item{na, rm}{boolean; a logical value indicating whether NA values should be stripped before the computation proceeds. Defaults to FALSE}
 }
 \value{
 grob object which can be assigned and then saved using ggsave() function
