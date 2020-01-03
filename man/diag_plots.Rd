@@ -4,7 +4,7 @@
 \alias{diag_plots}
 \title{Produces model diagnostic plots}
 \usage{
-diag_plots(mod, obs, size = 0.1, ggplot = TRUE, colourblind = TRUE,
+diag_plots(mod, obs, size = 0.1, ggplot = TRUE, colourblind = FALSE,
   na.rm = FALSE)
 }
 \arguments{
@@ -16,7 +16,7 @@ diag_plots(mod, obs, size = 0.1, ggplot = TRUE, colourblind = TRUE,
 
 \item{ggplot}{logical; plot in ggplot or base plot. Defaults to TRUE}
 
-\item{colourblind}{logical; Use colourblind friendly colours. Defaults to TRUE}
+\item{colourblind}{logical; Use colourblind friendly colours. Defaults to FALSE}
 
 \item{na, rm}{boolean; a logical value indicating whether NA values should be stripped before the computation proceeds. Defaults to FALSE}
 }
