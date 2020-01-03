@@ -4,12 +4,12 @@
 \alias{sum_stat}
 \title{Caclulate summary stats of mod v obs}
 \usage{
-sum_stat(mod, obs, depth = F, na.rm = T, depth.range = NULL)
+sum_stat(mod, obs, depth = FALSE, na.rm = TRUE, depth.range = NULL)
 }
 \arguments{
 \item{mod}{vector or dataframe; Vector if no depth values otherwise Modelled values in the long format. i.e. same as observed in `parsac`}
 
-\item{obs}{vector or dataframe; Vector if no depth values otherwise Observed values in the long format loaded in using load.obs}
+\item{obs}{vector or dataframe; Vector if no depth values otherwise Observed values in the long format used in `parsac`}
 
 \item{depth}{logical; Depth values are included. Defaults to False}
 
@@ -21,5 +21,5 @@ sum_stat(mod, obs, depth = F, na.rm = T, depth.range = NULL)
 data frame of summary statistics
 }
 \description{
-Calculate general summary statistics of modelled water temperature vs observed water temperature; Pearson's R, variance, covariance, bias, Nash-Sutcliffe Efficiency (NSE) and Root mean squared error (RMSE).
+Calculate general summary statistics of modelled water temperature vs observed water temperature; Pearson's R, variance, covariance, bias, Nash-Sutcliffe Efficiency (NSE) and Root mean squared error (RMSE) and log-likelihood (lnlikelihood).
 }
