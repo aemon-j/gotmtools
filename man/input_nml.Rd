@@ -2,22 +2,27 @@
 % Please edit documentation in R/input_nml.R
 \name{input_nml}
 \alias{input_nml}
-\title{Edit nml file}
+\title{Input values into nml file}
 \usage{
-input_nml(val, nml, par, print = T)
+input_nml(file, label, key, value, out_file = NULL)
 }
 \arguments{
-\item{val}{value; value to input into .nml file}
+\item{file}{filepath; to nml file which you wish to edit}
 
-\item{nml}{.nml file; for the parameters to be input into}
+\item{label}{string; which corresponds to section where the key is located}
 
-\item{par}{parameter for which the value will be replaced}
+\item{key}{string; name of key in which to input the value}
 
-\item{print}{logical; prints changes to .nml field to the console. Defaults to TRUE.}
-}
-\value{
-data
+\item{value}{string; to be input into the key/value pair. Note boolean values must be input as 'true'/'false' as per the nml format}
+
+\item{out_file}{filepath; to write the output nml file (optional); defaults to overwriting file if not specified}
 }
 \description{
-Input values and file names into the GOTM namelist files
+Inputs values into nml file by locating the label and key within the nml file. Preserves comments (!) if present. NOTE: this does not use a nml parser so if there are nml formatting errors this function will not pick them up.
+}
+\examples{
+input_nml(file = 'samp.nml', label = "LAKE_PARAMS", key = "depth_w_lk", value = 14, out_file = NULL)
+}
+\author{
+Tadhg Moore
 }
