@@ -4,8 +4,14 @@
 \alias{ts_mld}
 \title{Create a timeseries of mixed layer depth}
 \usage{
-ts_mld(wtr, slope = 0.1, seasonal = TRUE, daily = F,
-  mixed.cutoff = 1, tz = "UTC")
+ts_mld(
+  wtr,
+  slope = 0.1,
+  seasonal = TRUE,
+  daily = F,
+  mixed.cutoff = 1,
+  tz = "UTC"
+)
 }
 \arguments{
 \item{wtr}{dataframe of water temperature in the long form as loaded through load.obs or formatted using match.mod()}

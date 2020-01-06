@@ -4,8 +4,14 @@
 \alias{diag_plots}
 \title{Produces model diagnostic plots}
 \usage{
-diag_plots(mod, obs, size = 0.1, ggplot = TRUE, colourblind = FALSE,
-  na.rm = FALSE)
+diag_plots(
+  mod,
+  obs,
+  size = 0.1,
+  ggplot = TRUE,
+  colourblind = FALSE,
+  na.rm = FALSE
+)
 }
 \arguments{
 \item{mod}{dataframe; modelled values in long format.}

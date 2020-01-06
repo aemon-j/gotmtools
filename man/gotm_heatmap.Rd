@@ -4,9 +4,20 @@
 \alias{gotm_heatmap}
 \title{Create heatmap from GOTM output}
 \usage{
-gotm_heatmap(data, depths, res = 100, title = "Heatmap",
-  points = FALSE, rev.y.ax = FALSE, surface = FALSE,
-  fixed.level = TRUE, facet = FALSE, ylim = NULL, zlab = "", ...)
+gotm_heatmap(
+  data,
+  depths,
+  res = 100,
+  title = "Heatmap",
+  points = FALSE,
+  rev.y.ax = FALSE,
+  surface = FALSE,
+  fixed.level = TRUE,
+  facet = FALSE,
+  ylim = NULL,
+  zlab = "",
+  ...
+)
 }
 \arguments{
 \item{data}{dataframe; values loaded with load.3d}

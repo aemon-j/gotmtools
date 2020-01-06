@@ -4,8 +4,15 @@
 \alias{long_heatmap}
 \title{Create heatmap from dataerved files for acpy}
 \usage{
-long_heatmap(data, title = "Heatmap", ylim = NULL, xlim = NULL,
-  size = 1, zlab = "", ...)
+long_heatmap(
+  data,
+  title = "Heatmap",
+  ylim = NULL,
+  xlim = NULL,
+  size = 1,
+  zlab = "",
+  ...
+)
 }
 \arguments{
 \item{data}{dataframe; dataervations loaded with load.data}

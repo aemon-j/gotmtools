@@ -4,8 +4,14 @@
 \alias{plot_meteo}
 \title{Plot Meteo data}
 \usage{
-plot_meteo(meteo_file, header = F, sep = "\\t", start = NULL,
-  stop = NULL, tz = "UTC")
+plot_meteo(
+  meteo_file,
+  header = F,
+  sep = "\\t",
+  start = NULL,
+  stop = NULL,
+  tz = "UTC"
+)
 }
 \arguments{
 \item{meteo_file}{value file; File path to GOTM meteorlogical input file.}

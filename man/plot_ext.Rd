@@ -4,8 +4,18 @@
 \alias{plot_ext}
 \title{Plot light extinction parameters}
 \usage{
-plot_ext(file, header = F, sep = "\\t", start = NULL, stop = NULL,
-  tz = "UTC", main = "", ylab = "", type = "l", pch = ".")
+plot_ext(
+  file,
+  header = F,
+  sep = "\\t",
+  start = NULL,
+  stop = NULL,
+  tz = "UTC",
+  main = "",
+  ylab = "",
+  type = "l",
+  pch = "."
+)
 }
 \arguments{
 \item{file}{value file; File path to GOTM meteorlogical input file.}

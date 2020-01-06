@@ -4,8 +4,15 @@
 \alias{extractDepths}
 \title{Extract values at a depth or series of depths}
 \usage{
-extractDepths(mod.val, mod.dep, ncdf = NULL, var = NULL,
-  depths = NULL, method = "linear", print = T)
+extractDepths(
+  mod.val,
+  mod.dep,
+  ncdf = NULL,
+  var = NULL,
+  depths = NULL,
+  method = "linear",
+  print = T
+)
 }
 \arguments{
 \item{mod.val}{dataframe of modelled values loaded using load.3d}

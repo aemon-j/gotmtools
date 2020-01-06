@@ -4,8 +4,17 @@
 \alias{plot_calib}
 \title{Plot results from the database}
 \usage{
-plot_calib(dbFile, acpyXML, run = NULL, plot.dim = TRUE, nrow = 2,
-  ncol = 4, zoom = FALSE, z.fct = 2, update = F)
+plot_calib(
+  dbFile,
+  acpyXML,
+  run = NULL,
+  plot.dim = TRUE,
+  nrow = 2,
+  ncol = 4,
+  zoom = FALSE,
+  z.fct = 2,
+  update = F
+)
 }
 \arguments{
 \item{dbFile}{database file; filepath to the database file where calibration results are stored}

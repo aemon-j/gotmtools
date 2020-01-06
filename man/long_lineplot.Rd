@@ -4,8 +4,13 @@
 \alias{long_lineplot}
 \title{Create line plot from observed temperature in long format}
 \usage{
-long_lineplot(data, rev.depths = FALSE, ylab = "Temperature",
-  main = "Lineplot", colourblind = TRUE)
+long_lineplot(
+  data,
+  rev.depths = FALSE,
+  ylab = "Temperature",
+  main = "Lineplot",
+  colourblind = TRUE
+)
 }
 \arguments{
 \item{data}{dataframe; observations loaded with load.obs}

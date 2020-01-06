@@ -4,9 +4,19 @@
 \alias{plot_inp}
 \title{Plot extra inputs}
 \usage{
-plot_inp(file, header = F, sep = "\\t", start = NULL, stop = NULL,
-  ncol = 2, tz = "UTC", main = "", ylab = "", type = "p",
-  pch = ".")
+plot_inp(
+  file,
+  header = F,
+  sep = "\\t",
+  start = NULL,
+  stop = NULL,
+  ncol = 2,
+  tz = "UTC",
+  main = "",
+  ylab = "",
+  type = "p",
+  pch = "."
+)
 }
 \arguments{
 \item{file}{value file; File path to GOTM meteorlogical input file.}

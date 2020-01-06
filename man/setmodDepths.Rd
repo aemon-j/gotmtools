@@ -4,8 +4,14 @@
 \alias{setmodDepths}
 \title{Extract modelled temperature at observation depths}
 \usage{
-setmodDepths(mod.val, mod.dep, obs = NULL, depths, method = "linear",
-  print = T)
+setmodDepths(
+  mod.val,
+  mod.dep,
+  obs = NULL,
+  depths,
+  method = "linear",
+  print = T
+)
 }
 \arguments{
 \item{mod.val}{dataframe of modelled values loaded using load.3d}

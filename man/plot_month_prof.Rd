@@ -4,8 +4,14 @@
 \alias{plot_month_prof}
 \title{Plot monthly average profiles}
 \usage{
-plot_month_prof(mod, obs, month = c("Jan", "Apr", "Jul", "Oct"),
-  year = NULL, fixed.level = T, step = 2)
+plot_month_prof(
+  mod,
+  obs,
+  month = c("Jan", "Apr", "Jul", "Oct"),
+  year = NULL,
+  fixed.level = T,
+  step = 2
+)
 }
 \arguments{
 \item{mod}{dataframe; Modelled values in the long format. i.e. same as observed in ACPy}

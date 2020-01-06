@@ -4,8 +4,7 @@
 \alias{plot_hypso}
 \title{Plot hypsograph data}
 \usage{
-plot_hypso(hypsograph_file, header = F, sep = "\\t",
-  title = "Hypsograph")
+plot_hypso(hypsograph_file, header = F, sep = "\\t", title = "Hypsograph")
 }
 \arguments{
 \item{hypsograph_file}{value file; File path to GOTM hypsograph input file.}
