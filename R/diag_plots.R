@@ -12,7 +12,6 @@
 #' @importFrom RColorBrewer brewer.pal
 #' @importFrom grDevices colorRamp
 #' @import ggplot2
-#' @import stats
 #' @import graphics
 #' @export
 diag_plots <- function(mod, obs, size = 0.1, ggplot = TRUE, colourblind = FALSE, na.rm = FALSE){
@@ -22,7 +21,7 @@ diag_plots <- function(mod, obs, size = 0.1, ggplot = TRUE, colourblind = FALSE,
   }
   ndep = length(unique(obs[,2]))
   if(colourblind){
-    dramp <- colorRampPalette(RColorBrewer::brewer.pal(8, 'Dark2'))
+    dramp <- colorRampPalette(brewer.pal(8, 'Dark2'))
   }
   if(ggplot == FALSE){
     dif = mod[,3] - obs[,3]

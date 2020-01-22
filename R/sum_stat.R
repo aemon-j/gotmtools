@@ -8,7 +8,6 @@
 #' @param na.rm logical; Remove NA'values
 #' @param depth.range vector; vector with a depth range to extract statistics at certain depths. Upper limit first e.g. c(-5,-10). Defaults to whole depth range.
 #' @return data frame of summary statistics
-#' @import stats
 #' @export
 sum_stat <- function(mod, obs, depth = FALSE, na.rm = TRUE, depth.range = NULL){
   if(depth == T){

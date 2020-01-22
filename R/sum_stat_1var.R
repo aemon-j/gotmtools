@@ -6,7 +6,6 @@
 #' @param obs vector; Observed values
 #' @param na.rm logical; Remove NA'values
 #' @return data frame of summary statistics
-#' @import stats
 #' @export
 sum_stat_1var <- function(mod, obs, na.rm =T){
   dif = mod- obs
