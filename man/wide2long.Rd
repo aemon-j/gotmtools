@@ -7,9 +7,9 @@
 wide2long(data, depths)
 }
 \arguments{
-\item{data}{dataframe; values loaded with load.3d}
+\item{data}{dataframe; values loaded with get_vari()}
 
-\item{depths}{dataframe; depths loaded with load.depths}
+\item{depths}{dataframe; depths loaded with get_vari() or vector of depths corresponding to values in the datafra}
 }
 \value{
 dataframe in the same format as the observation file

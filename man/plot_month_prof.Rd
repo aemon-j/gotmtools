@@ -4,30 +4,19 @@
 \alias{plot_month_prof}
 \title{Plot monthly average profiles}
 \usage{
-plot_month_prof(
-  mod,
-  obs,
-  month = c("Jan", "Apr", "Jul", "Oct"),
-  year = NULL,
-  fixed.level = T,
-  step = 2
-)
+plot_month_prof(mod, obs, year = FALSE, points = FALSE)
 }
 \arguments{
-\item{mod}{dataframe; Modelled values in the long format. i.e. same as observed in ACPy}
+\item{mod}{dataframe; Modelled values in the long format.}
 
-\item{obs}{dataframe; Observed values in the long format loaded in using load_obs}
+\item{obs}{dataframe; Observed values in the long format.}
 
-\item{month}{vector; with string values for months for profiles in 3-letter format e.g. 'Jan'. Default = c('Jan','Apr', 'Jul','Oct')}
+\item{year}{boolean; Facet by year. Defaults to FALSE}
 
-\item{year}{numeric; specifying year of profiles. Defaults to year of first measurement if not specified.}
-
-\item{fixed.level}{logical; Temperature measurements are at fixed points throughout the timeseries. Defaults to TRUE}
-
-\item{step}{numeric; Depth to average temperature measurements to. Only used if fixed.level = FALSE.}
+\item{points}{boolean; Include points for observation depths. Defaults to FALSE}
 }
 \value{
-plot of temperature profiles
+ggplot of temperature profiles
 }
 \description{
 Plot monthly temperature averaged profiles for four months

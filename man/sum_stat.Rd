@@ -7,15 +7,15 @@
 sum_stat(mod, obs, depth = FALSE, na.rm = TRUE, depth.range = NULL)
 }
 \arguments{
-\item{mod}{vector or dataframe; Vector if no depth values otherwise Modelled values in the long format. i.e. same as observed in `parsac`}
+\item{mod}{vector or dataframe; Vector if no depth values otherwise Modelled values in the long format; date, depth, values}
 
-\item{obs}{vector or dataframe; Vector if no depth values otherwise Observed values in the long format used in `parsac`}
+\item{obs}{vector or dataframe; Vector if no depth values otherwise Observed values in the long format; date, depth, values}
 
 \item{depth}{logical; Depth values are included. Defaults to False}
 
 \item{na.rm}{logical; Remove NA'values}
 
-\item{depth.range}{vector; vector with a depth range to extract statistics at certain depths. Upper limit first e.g. c(-5,-10). Defaults to whole depth range.}
+\item{depth.range}{vector; vector with a depth range to extract statistics at certain depths.}
 }
 \value{
 data frame of summary statistics
