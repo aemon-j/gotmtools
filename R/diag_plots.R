@@ -16,15 +16,17 @@
 #' @export
 diag_plots <- function(mod, obs, size = 0.1, ggplot = TRUE, colourblind = FALSE, na.rm = FALSE){
   stats = sum_stat(mod, obs, depth = T, na.rm = na.rm)
-  if(max(mod[,2]) > 0){ #Makes depths negative
-    mod[,2] <- -mod[,2]
+  df <- merge(mod, obs, by = c(1,2))
+  colnames(df)[3:4] <- c('mod', 'obs')
+  if(max(df[,2]) > 0){ #Makes depths negative
+    df[,2] <- -df[,2]
   }
-  ndep = length(unique(obs[,2]))
+  ndep = length(unique(df[,2]))
   if(colourblind){
     dramp <- colorRampPalette(brewer.pal(8, 'Dark2'))
   }
   if(ggplot == FALSE){
-    dif = mod[,3] - obs[,3]
+    dif = df$mod - df$obs
     par(mfrow=c(2,3))
 
     xfit <- seq(min(dif, na.rm = T), max(dif, na.rm = T), length=40)
@@ -40,21 +42,21 @@ diag_plots <- function(mod, obs, size = 0.1, ggplot = TRUE, colourblind = FALSE,
     eqn <- bquote(Mean == .(mn) * "," ~~ S.D. == .(std.dev))
     Corner_text(eqn)
 
-    plot(mod[,3], dif, cex = 0.5, pch ='.', main = 'Residuals vs. Modelled',
+    plot(df$mod, dif, cex = 0.5, pch ='.', main = 'Residuals vs. Modelled',
          ylab = 'Residuals', xlab = 'Modelled values')
     abline( h =0, col =2, lty =2)
 
-    plot(mod[,1], dif, ylab = 'Time', xlab = 'Residuals', main = 'Residuals vs. Time', pch = '.')
+    plot(df[,1], dif, ylab = 'Time', xlab = 'Residuals', main = 'Residuals vs. Time', pch = '.')
     abline(h =0, lty =2, col =2)
 
-    if(min(mod[,2]) >= 0){
-      mod[,2] = -mod[,2]
+    if(min(df[,2]) >= 0){
+      df[,2] = -df[,2]
     }
-    plot(dif, mod[,2], ylim = range(mod[,2]), ylab = 'Depth (m)', xlab = 'Residuals', main = 'Residuals vs. Depth', pch = '.')
+    plot(dif, df[,2], ylim = range(df[,2]), ylab = 'Depth (m)', xlab = 'Residuals', main = 'Residuals vs. Depth', pch = '.')
     abline(v =0, lty =2, col =2)
 
-    plot(mod[,3], obs[,3], pch ='.', main = 'Obs vs. Mod', ylab = 'Obs',
-         xlab ='Mod', ylim = range(mod[,3], obs[,3], na.rm =T), xlim = range(mod[,3], obs[,3], na.rm =T))
+    plot(df$mod, df$obs, pch ='.', main = 'Obs vs. Mod', ylab = 'Obs',
+         xlab ='Mod', ylim = range(df$mod, df$obs, na.rm =T), xlim = range(df$mod, df$obs, na.rm =T))
     abline(0,1, col =2, lty =2)
     eqn <- bquote(Pear_R == .(round(stats$Pearson_r,2)) * "," ~~ var.obs == .(round(stats$Variance_obs,2)) *
                     "," ~~ var.mod == .(round(stats$Variance_mod,2)) *  "," ~~ NSE == .(round(stats$NSE,2)))
@@ -67,24 +69,23 @@ diag_plots <- function(mod, obs, size = 0.1, ggplot = TRUE, colourblind = FALSE,
     abline(0,1, lty =2, col =2)
   }else{
     #ggplot2 version - put all variables in one dataframe
-    mod$res <- mod[,3] - obs[,3]
-    deps <- unique(mod[,2])
+    df$res <- df$mod - df$obs
+    deps <- unique(df[,2])
     deps <- deps[order(deps)]
     if(length(deps) < 10){
       lgd.sz = 4
     }else{
       lgd.sz =2
     }
-    mod$fdepth <- factor(mod[,2], levels = as.character(deps))
-    mod$obs <- obs[,3]
+    df$fdepth <- factor(df[,2], levels = as.character(deps))
 
-    mean.res = round(mean(mod$res, na.rm =T),2)
-    med.res = round(median(mod$res, na.rm = T),2)
-    std.dev = round(sd(mod$res, na.rm =T), 2)
-    n = nrow(mod[!is.na(mod$res),])
+    mean.res = round(mean(df$res, na.rm =T),2)
+    med.res = round(median(df$res, na.rm = T),2)
+    std.dev = round(sd(df$res, na.rm =T), 2)
+    n = nrow(df[!is.na(df$res),])
     bw = 0.2
-    min.res = min(mod$res, na.rm =T)
-    max.res = max(mod$res, na.rm =T)
+    min.res = min(df$res, na.rm =T)
+    max.res = max(df$res, na.rm =T)
 
     # Create text to be added to plots
     grob1 <- grid::grobTree(grid::textGrob(paste0("Mean = ", mean.res,'; S.D = ', std.dev), x=0.5,  y=0.95, hjust=0,
@@ -96,7 +97,7 @@ diag_plots <- function(mod, obs, size = 0.1, ggplot = TRUE, colourblind = FALSE,
 
 
     #Plots
-    p1 <-ggplot(mod, aes(x = res)) +
+    p1 <-ggplot(df, aes(x = res)) +
       geom_histogram(fill = "blue", colour = 'black', breaks = seq(min.res, max.res, bw)) +
       stat_function(
         fun = function(x, mean, sd, n, bw){
@@ -106,12 +107,12 @@ diag_plots <- function(mod, obs, size = 0.1, ggplot = TRUE, colourblind = FALSE,
       scale_x_continuous("Model - Obs (C)")+
       scale_y_continuous("Frequency")+
       ggtitle('Histogram of residuals')+
-      coord_cartesian(xlim = c(min(mod$res, na.rm = T),max(mod$res,na.rm =T)))+
+      coord_cartesian(xlim = c(min(df$res, na.rm = T),max(df$res,na.rm =T)))+
       geom_vline(xintercept = med.res, colour = 'green', linetype = 'dashed', size = 1.2)+
       theme_bw()
     p1 <- p1 + annotation_custom(grob1)
 
-    p2 <- ggplot(mod, aes_string(names(mod)[3], 'res', colour = 'fdepth'))+
+    p2 <- ggplot(df, aes_string('mod', 'res', colour = 'fdepth'))+
       geom_point(size = size)+
       xlab('Modelled values')+
       ylab('Residuals')+
@@ -121,7 +122,7 @@ diag_plots <- function(mod, obs, size = 0.1, ggplot = TRUE, colourblind = FALSE,
       geom_hline(yintercept = 0, size = 1, linetype = 'dashed')+
       theme_bw()
 
-    p3 <- ggplot(mod, aes_string(names(mod)[1], 'res', colour = 'fdepth'))+
+    p3 <- ggplot(df, aes_string(names(df)[1], 'res', colour = 'fdepth'))+
       geom_point(size = size)+
       xlab('Time')+
       ylab('Residuals')+
@@ -133,7 +134,7 @@ diag_plots <- function(mod, obs, size = 0.1, ggplot = TRUE, colourblind = FALSE,
       theme_bw()#+
     #theme(legend.text=element_text(size= (lgd.sz*2.5)))
 
-    p4 <- ggplot(mod, aes_string('res', names(mod)[2], colour = 'fdepth'))+
+    p4 <- ggplot(df, aes_string('res', names(df)[2], colour = 'fdepth'))+
       geom_point(size = size)+
       ylab('Depth')+
       xlab('Residuals')+
@@ -144,19 +145,19 @@ diag_plots <- function(mod, obs, size = 0.1, ggplot = TRUE, colourblind = FALSE,
       theme_bw()
 
 
-    p5 <- ggplot(mod,aes_string(names(mod)[3], 'obs', colour = 'fdepth'))+
+    p5 <- ggplot(df,aes_string('mod', 'obs', colour = 'fdepth'))+
       geom_point(size = size)+
       ylab('Obs')+
       xlab('Modelled')+
       ggtitle('Obs vs. Mod')+
-      coord_cartesian(xlim = range(mod[,3], obs[,3], na.rm =T), ylim = range(mod[,3], obs[,3], na.rm =T))+
+      coord_cartesian(xlim = range(df$mod, df$obs, na.rm =T), ylim = range(df$mod, df$obs, na.rm =T))+
       geom_abline(slope = 1, intercept = 0, colour = 'black', linetype = 'dashed', size =1)+
       {if(colourblind)scale_colour_manual(values = dramp(ndep))}+
       guides(colour = F)+
       theme_bw()
     p5 <- p5 + annotation_custom(grob2) + annotation_custom(grob3)
 
-    p6 <- ggplot(mod, aes(sample = res))+
+    p6 <- ggplot(df, aes(sample = res))+
       stat_qq()+
       geom_abline(slope = 1, intercept = 0, size =1, linetype = 'dashed')+
       xlab('Sample Quantiles')+
