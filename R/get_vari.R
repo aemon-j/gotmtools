@@ -30,8 +30,11 @@ get_vari <- function(ncdf, var, incl_time = TRUE, print = TRUE){
     tmonth <- as.integer(unlist(tdstr)[2])
     tday <- as.integer(unlist(tdstr)[3])
     tyear <- as.integer(unlist(tdstr)[1])
-    origin = as.POSIXct(paste0(tyear, "-", tmonth, "-",
-                               tday), format = "%Y-%m-%d", tz = "UTC")
+    tdstr <- strsplit(unlist(tustr)[4], ":")
+    thour <- as.integer(unlist(tdstr)[1])
+    tmin <- as.integer(unlist(tdstr)[2])
+    origin <- as.POSIXct(paste0(tyear, "-", tmonth,
+                                "-", tday, ' ', thour, ':', tmin), format = "%Y-%m-%d %H:%M", tz = "UTC")
     time = as.POSIXct(tim, origin = origin, tz = "UTC")
   }
   var1 = ncvar_get(fid, var)
