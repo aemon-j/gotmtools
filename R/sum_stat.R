@@ -2,20 +2,41 @@
 #'
 #' Calculate general summary statistics of modelled water temperature vs observed water temperature; Pearson's R, variance, covariance, bias, Nash-Sutcliffe Efficiency (NSE) and Root mean squared error (RMSE) and log-likelihood (lnlikelihood).
 #'
-#' @param mod vector or dataframe; Vector if no depth values otherwise Modelled values in the long format. i.e. same as observed in `parsac`
-#' @param obs vector or dataframe; Vector if no depth values otherwise Observed values in the long format used in `parsac`
+#' @param mod vector or dataframe; Vector if no depth values otherwise Modelled values in the long format; date, depth, values
+#' @param obs vector or dataframe; Vector if no depth values otherwise Observed values in the long format; date, depth, values
 #' @param depth logical; Depth values are included. Defaults to False
 #' @param na.rm logical; Remove NA'values
-#' @param depth.range vector; vector with a depth range to extract statistics at certain depths. Upper limit first e.g. c(-5,-10). Defaults to whole depth range.
+#' @param depth.range vector; vector with a depth range to extract statistics at certain depths.
 #' @return data frame of summary statistics
 #' @export
 sum_stat <- function(mod, obs, depth = FALSE, na.rm = TRUE, depth.range = NULL){
   if(depth == T){
+    # Make depths positive
+    obs[,2] <- abs(obs[,2])
+    mod[,2] <- abs(mod[,2])
+
     if(!is.null(depth.range)){
-      obs = obs[(obs[,2] <= depth.range[1] & obs[,2] >= depth.range[2]),]
-      mod = mod[(mod[,2] <= depth.range[1] & mod[,2] >= depth.range[2]),]
+      obs = obs[(obs[,2] <= max(depth.range) & obs[,2] >= min(depth.range)),]
+      mod = mod[(mod[,2] <= max(depth.range) & mod[,2] >= min(depth.range)),]
     }
+
     df <- merge(mod, obs, by = c(1,2))
+    df <- na.exclude(df)
+
+    # analyse strat
+    o.strat <- analyse_strat(df[,c(1,2,4)])
+    m.strat <- analyse_strat(df[,c(1:3)])
+
+    diff.strat <- o.strat
+    for(i in 1:nrow(o.strat)){
+      for(j in 2:ncol(o.strat)){
+        diff.strat[i,j] <- m.strat[i,j] - o.strat[i,j]
+      }
+    }
+    diff <- t(as.data.frame(colMeans(diff.strat[,-1])))
+    rownames(diff) <- NULL
+
+
     colnames(df)[3:4] <- c('mod', 'obs')
     dif = df$mod - df$obs
     pear_r = cor.test(df$obs, df$mod, method = 'pearson')
@@ -34,6 +55,7 @@ sum_stat <- function(mod, obs, depth = FALSE, na.rm = TRUE, depth.range = NULL){
                                Variance_mod = var_mod, SD_obs = SD_obs, SD_mod = SD_mod,
                                Covariance = cov, #Correlation =cor,
                                Bias = bias, MAE = mae, RMSE = rmse, NSE = nse, lnlikelihood = lnlikelihood, row.names = c())
+    summary_stats <- cbind.data.frame(summary_stats, diff)
     return(summary_stats)
   }else{
     dif = mod- obs
