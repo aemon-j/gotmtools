@@ -5,17 +5,19 @@ gotmtools
 
 
 Tools for interacting with the [General Ocean Turbulence Model (GOTM)](http://gotm.net/ "General Ocean Turbulence Model's website") in R. `gotmtools` is inspired by glmtools and applies many of the same functions but adapted for handling GOTM output. It is focused on dealing with model output and diagnosing model performance compared to observed data.
-Function desription and example files soon to follow... 
+
+Example files can be accessed [here](https://github.com/tadhg-moore/GOTM_examples/) which will be converted into a vignette at some stage.
+Function description soon to follow... 
 
 ## Installation
 
 You can install gotmtools from Github with:
 
 ```{r gh-installation, eval = FALSE}
-install.packages('glmtools', repos = "https://owi.usgs.gov/R")
+devtools::install_github("hdugan/glmtools")
 # install.packages("devtools")
-devtools::install_github("tadhg-moore/GOTMr")
-devtools::install_github("tadhg-moore/gotmtools")
+devtools::install_github("aemon-j/GOTMr")
+devtools::install_github("aemon-j/gotmtools")
 ```
       
 What libraries does `gotmtools` need?
