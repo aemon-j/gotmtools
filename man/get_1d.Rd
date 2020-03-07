@@ -15,5 +15,5 @@ get_1d(ncdf, var)
 vector; 1D object
 }
 \description{
-Extracts a selected 1-D parameter from the netCDF file.
+Extracts a selected 1-D parameter from the netCDF file e.g. 'lat', 'lon'.
 }

@@ -27,5 +27,5 @@ strat <- analyse_strat(Ts = df[,2], Tb = df[,ncol(df)], dates = df[,1])
 
 }
 \author{
-Tom Shatwell
+Tom Shatwell, Tadhg Moore
 }

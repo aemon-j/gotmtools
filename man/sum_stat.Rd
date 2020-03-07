@@ -4,14 +4,23 @@
 \alias{sum_stat}
 \title{Caclulate summary stats of mod v obs}
 \usage{
-sum_stat(mod, obs, depth = FALSE, na.rm = TRUE, depth.range = NULL)
+sum_stat(
+  mod,
+  obs,
+  depth = FALSE,
+  strat = FALSE,
+  na.rm = TRUE,
+  depth.range = NULL
+)
 }
 \arguments{
 \item{mod}{vector or dataframe; Vector if no depth values otherwise Modelled values in the long format; date, depth, values}
 
 \item{obs}{vector or dataframe; Vector if no depth values otherwise Observed values in the long format; date, depth, values}
 
-\item{depth}{logical; Depth values are included. Defaults to False}
+\item{depth}{logical; Depth values are included. Defaults to FALSE}
+
+\item{strat}{logical; Calculate stratification statistics. Defaults to FALSE}
 
 \item{na.rm}{logical; Remove NA'values}
 

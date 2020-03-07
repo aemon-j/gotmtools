@@ -69,7 +69,7 @@ calc_swr <- function(time, lat, lon, cloud, daily2hour = F){
   sunbet = asin(sunbet)*rad2deg
 
   qshort  = qtot*(1-0.62*cloud + .0019*sunbet) #From GOTM short_wave_radiation.F90
-  qshort[which(cloud <0.3)] <- qtot[which(cloud <0.3)]
+  qshort[which(cloud <0.3)] <- qtot[which(cloud < 0.3)]
   qshort[solar_zenith_angle == 90] <- 0 #Assign Zero when the sun is down.
 
   if(daily2hour == T){

@@ -1,6 +1,6 @@
 #' Calculate cloud cover
 #'
-#' Calculate cloud cover using latitude, air temperature, relative humidity (or dewpoint temperature) and short wave radiation using the calculations from Martin and McCutcheon (1999).
+#' Calculate hourly cloud cover using latitude, air temperature, relative humidity (or dewpoint temperature) and short wave radiation using the calculations from Martin and McCutcheon (1999).
 #'
 #' @param date vector; Dates in as.POSixct class
 #' @param airt vector; Air temperature values which correspond to the vector of dates
@@ -12,6 +12,7 @@
 #' @param elev numeric; elevation in metres above sea level
 #' @param daily logical; Is the data on a daily timestep. Defaults to FALSE
 #' @return vector of cloud cover values which correspond to the vector of dates supplied
+#' @author Ana I. Ayala Zamora, Tadhg Moore
 #' @examples
 #'  met_file <- system.file('extdata/met_file.dat', package = 'GOTMr')
 #'  swr_file <- system.file('extdata/swr_input_file.dat', package = 'GOTMr')

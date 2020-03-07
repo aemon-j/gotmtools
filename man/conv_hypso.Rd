@@ -19,5 +19,5 @@ conv_hypso(in_file, out_file, header = F, sep = "\\t")
 File with hypsograph formatted for rLakeAnalyzer
 }
 \description{
-Convert hypsograph format for GOTM to the format for use with rLakeAnalyzer
+Convert GOTM hypsograph format to the format for use with rLakeAnalyzer
 }

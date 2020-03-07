@@ -1,17 +1,17 @@
-#' Summarise ACPy database
+#' Summarise parsac database
 #'
 #' Summarises all information within a database
 #'
-#' @param dbFile database file; filepath to database file with ACPy results
-#' @param acpyXML XML file; filepath to the xml file used for ACPy calibration
+#' @param dbFile database file; filepath to database file with parsac results
+#' @param parsacXML XML file; filepath to the xml file used for parsac calibration
 #' @return dataframe containing summary information about the database
 #' @import XML
 #' @import RSQLite
 #' @importFrom tidyr separate
 #' @importFrom stats na.exclude
 #' @export
-dbsummary <- function(dbFile, acpyXML){
-  xml = xmlParse(acpyXML)
+dbsummary <- function(dbFile, parsacXML){
+  xml = xmlParse(parsacXML)
   rootNode = xmlRoot(xml)
   data = xmlSApply(rootNode,function(x) xmlSApply(x, xmlAttrs))
   db = data$transports

@@ -1,6 +1,6 @@
 #' Convert hypsograph to rLakeAnalyzer format
 #'
-#' Convert hypsograph format for GOTM to the format for use with rLakeAnalyzer
+#' Convert GOTM hypsograph format to the format for use with rLakeAnalyzer
 #'
 #' @param in_file value file; File path to GOTM hypsograph file
 #' @param out_file value file; File path to write the new ".bth' file to

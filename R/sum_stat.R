@@ -4,12 +4,14 @@
 #'
 #' @param mod vector or dataframe; Vector if no depth values otherwise Modelled values in the long format; date, depth, values
 #' @param obs vector or dataframe; Vector if no depth values otherwise Observed values in the long format; date, depth, values
-#' @param depth logical; Depth values are included. Defaults to False
+#' @param depth logical; Depth values are included. Defaults to FALSE
+#' @param strat logical; Calculate stratification statistics. Defaults to FALSE
 #' @param na.rm logical; Remove NA'values
 #' @param depth.range vector; vector with a depth range to extract statistics at certain depths.
 #' @return data frame of summary statistics
+#' @importFrom hydroGOF NSE rmse KGE
 #' @export
-sum_stat <- function(mod, obs, depth = FALSE, na.rm = TRUE, depth.range = NULL){
+sum_stat <- function(mod, obs, depth = FALSE, strat = FALSE, na.rm = TRUE, depth.range = NULL){
   if(depth == T){
     # Make depths positive
     obs[,2] <- abs(obs[,2])
@@ -24,18 +26,19 @@ sum_stat <- function(mod, obs, depth = FALSE, na.rm = TRUE, depth.range = NULL){
     df <- na.exclude(df)
 
     # analyse strat
-    o.strat <- analyse_strat(df[,c(1,2,4)])
-    m.strat <- analyse_strat(df[,c(1:3)])
+    if(strat){
+      o.strat <- analyse_strat(df[,c(1,2,4)])
+      m.strat <- analyse_strat(df[,c(1:3)])
 
-    diff.strat <- o.strat
-    for(i in 1:nrow(o.strat)){
-      for(j in 2:ncol(o.strat)){
-        diff.strat[i,j] <- m.strat[i,j] - o.strat[i,j]
+      diff.strat <- o.strat
+      for(i in 1:nrow(o.strat)){
+        for(j in 2:ncol(o.strat)){
+          diff.strat[i,j] <- m.strat[i,j] - o.strat[i,j]
+        }
       }
+      diff <- t(as.data.frame(colMeans(diff.strat[,-1])))
+      rownames(diff) <- NULL
     }
-    diff <- t(as.data.frame(colMeans(diff.strat[,-1])))
-    rownames(diff) <- NULL
-
 
     colnames(df)[3:4] <- c('mod', 'obs')
     dif = df$mod - df$obs
@@ -50,12 +53,15 @@ sum_stat <- function(mod, obs, depth = FALSE, na.rm = TRUE, depth.range = NULL){
     mae = mean(abs(dif), na.rm = na.rm)
     rmse = sqrt(mean(dif^2, na.rm = na.rm))
     nse = NSE(df$mod, df$obs, na.rm = na.rm)
+    kge = KGE(df$mod, df$obs, na.rm = na.rm)
     lnlikelihood = sum(dnorm(df$obs, mean = df$mod, log = TRUE), na.rm = na.rm)
     summary_stats = data.frame(Pearson_r = pear_r$estimate,Variance_obs = var_obs,
                                Variance_mod = var_mod, SD_obs = SD_obs, SD_mod = SD_mod,
                                Covariance = cov, #Correlation =cor,
-                               Bias = bias, MAE = mae, RMSE = rmse, NSE = nse, lnlikelihood = lnlikelihood, row.names = c())
-    summary_stats <- cbind.data.frame(summary_stats, diff)
+                               Bias = bias, MAE = mae, RMSE = rmse, NSE = nse, KGE = kge, lnlikelihood = lnlikelihood, row.names = c())
+    if(strat){
+      summary_stats <- cbind.data.frame(summary_stats, diff)
+    }
     return(summary_stats)
   }else{
     dif = mod- obs
@@ -70,11 +76,12 @@ sum_stat <- function(mod, obs, depth = FALSE, na.rm = TRUE, depth.range = NULL){
     mae = mean(abs(dif), na.rm = na.rm)
     rmse = sqrt(mean(dif^2, na.rm = na.rm))
     nse = NSE(mod, obs, na.rm = na.rm)
+    kge = KGE(mod, obs, na.rm = na.rm)
     lnlikelihood = sum(dnorm(obs, mean = mod, log = TRUE), na.rm = na.rm)
     summary_stats = data.frame(Pearson_r = pear_r$estimate,Variance_obs = var_obs,
                                Variance_mod = var_mod, SD_obs = SD_obs, SD_mod = SD_mod,
                                Covariance = cov, #Correlation =cor,
-                               Bias = bias, MAE = mae, RMSE = rmse, NSE = nse, lnlikelihood = lnlikelihood, row.names = c())
+                               Bias = bias, MAE = mae, RMSE = rmse, NSE = nse, KGE = kge, lnlikelihood = lnlikelihood, row.names = c())
     return(summary_stats)
   }
 

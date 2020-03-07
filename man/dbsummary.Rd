@@ -2,14 +2,14 @@
 % Please edit documentation in R/dbsummary.R
 \name{dbsummary}
 \alias{dbsummary}
-\title{Summarise ACPy database}
+\title{Summarise parsac database}
 \usage{
-dbsummary(dbFile, acpyXML)
+dbsummary(dbFile, parsacXML)
 }
 \arguments{
-\item{dbFile}{database file; filepath to database file with ACPy results}
+\item{dbFile}{database file; filepath to database file with parsac results}
 
-\item{acpyXML}{XML file; filepath to the xml file used for ACPy calibration}
+\item{parsacXML}{XML file; filepath to the xml file used for parsac calibration}
 }
 \value{
 dataframe containing summary information about the database

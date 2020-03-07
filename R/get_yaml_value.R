@@ -10,8 +10,8 @@
 #' @author
 #'Tadhg Moore
 #' @examples
-#' yaml_file <- system.file('extdata/gotm.yaml', package = 'GOTMr')
-#' get_yaml_value(file = yaml_file, label = 'airp', key = 'file')
+#' yaml_file <- system.file('extdata/gotm.yaml', package <- 'GOTMr')
+#' get_yaml_value(file <- yaml_file, label <- 'airp', key <- 'file')
 #' @export
 #'
 get_yaml_value <- function(file = 'gotm.yaml', label, key){
@@ -27,11 +27,11 @@ get_yaml_value <- function(file = 'gotm.yaml', label, key){
 
   #Find index of key to replace
   key_id <- paste0(' ',key, ':')
-  ind_key = grep(key_id, yml)
+  ind_key <- grep(key_id, yml)
   if(length(ind_key) == 0){
     stop(key, ' not found in ', label, ' in ', file)
   }
-  ind_key = ind_key[ind_key > ind_label]
+  ind_key <- ind_key[ind_key > ind_label]
   ind_map <- ind_key[which.min(ind_key - ind_label)]
   if(length(ind_map) == 0){
     stop(key, ' not found in ', label, ' in ', file)
@@ -43,14 +43,14 @@ get_yaml_value <- function(file = 'gotm.yaml', label, key){
 
 
   if(grepl(':', spl2)){
-    spl3 = strsplit(spl2, ' ')[[1]]
-    val = paste(spl3[1], spl3[2])
+    spl3 <- strsplit(spl2, ' ')[[1]]
+    val <- paste(spl3[1], spl3[2])
   }else{
-    val <- gsub(" ", "", spl2, fixed = TRUE)
+    val <- gsub(" ", "", spl2, fixed <- TRUE)
   }
 
   # check if item is a list
-  if(length(grep("  - ",yml[ind_map+1]))>0){
+  if (length(grep("  - ", yml[ind_map + 1])) > 0) {
     lst <- list(yml[ind_map + 1])
     k <- 2
     while (length(grep("  - ",yml[ind_map + k]))>0) {
@@ -60,20 +60,20 @@ get_yaml_value <- function(file = 'gotm.yaml', label, key){
     val <- unlist(lapply(lst,function(x){strsplit(x,"- ")[[1]][2]}))
   }
 
-  if (length(val)==1){
+  if (length(val) == 1) {
     val2 <- NULL
 
-    if(val == 'false'){
-      val2 = FALSE
+    if (val == 'false') {
+      val2 <- FALSE
     }
-    if(val == 'true'){
-      val2 = TRUE
+    if (val == 'true') {
+      val2 <- TRUE
     }
     flg <- TRUE
     flg <- tryCatch({!is.na(as.numeric(val))},
-                    warning = function(x)return(FALSE))
+                    warning <- function(x)return(FALSE))
     if(flg){
-      val2 = as.numeric(val)
+      val2 <- as.numeric(val)
     }
     if(is.null(val2)){
       val2 <- gsub('\"',"", val)
@@ -84,14 +84,14 @@ get_yaml_value <- function(file = 'gotm.yaml', label, key){
 
     if(all(val %in% c('false','true'))){
       val2 <- rep(TRUE,length(val))
-      val2[val %in% 'false'] = FALSE
+      val2[val %in% 'false'] <- FALSE
     }
 
     flg <- TRUE
     flg <- tryCatch({!is.na(as.numeric(val))},
-                    warning = function(x)return(FALSE))
+                    warning <- function(x)return(FALSE))
     if(all(flg)){
-      val2 = as.numeric(val)
+      val2 <- as.numeric(val)
     }
     if(is.null(val2)){
       val2 <- gsub('\"',"", val)

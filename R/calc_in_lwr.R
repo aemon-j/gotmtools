@@ -16,6 +16,11 @@
 
 calc_in_lwr <- function(cc, airt, relh = NULL, dewt = NULL){
   if(is.null(dewt)){
+    chk_0 <- which(relh == 0)
+    if(length(chk_0) > 0){
+      warning('0 values in relh\nSetting to ', min(relh[relh != 0]))
+      relh[chk_0] <- min(relh[relh != 0])
+    }
     dewt <- 243.04*(log(relh/100)+((17.625*airt)/(243.04+airt)))/(17.625-log(relh/100)-((17.625*airt)/(243.04+airt)))
   }
   airt_K <- airt +273.15 #convert to Kelvin

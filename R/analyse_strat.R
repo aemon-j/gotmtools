@@ -8,7 +8,7 @@
 #' @param H_ice vector; of ice thickness which corresponds to date vector, set to NULL if analysis not required. Defaults to NULL
 #' @param drho numeric; density difference between top and bottom indicating stratificaiton [kg m^-3]
 #' @param NH boolean; northern hemisphere? TRUE or FALSE. Defaults to true
-#' @author Tom Shatwell
+#' @author Tom Shatwell, Tadhg Moore
 #'
 #' @examples
 #' \dontrun{
@@ -20,9 +20,53 @@
 analyse_strat <- function(data, H_ice = NULL, drho = 0.1, NH = TRUE){
 
   data[,2] <- abs(data[,2])
-  Ts = data[data[,2] == min(data[,2]),3]
-  Tb = data[data[,2] == max(data[,2]),3]
+  depths <- unique(data[,2])
+  depths <- depths[order(depths)]
+
+  # Find closest depth near the surface without NA
+  for(i in 1:length(depths)){
+    Ts = data[data[,2] == depths[i],3]
+    if(sum(is.na(Ts))/length(Ts) < 0.25){
+      if(i != 1){
+        message('Warning: Using ', depths[i], ' as the surface.')
+      }
+      break
+    }
+  }
+  # Find closest depth near the bottom without NA
+  for(i in length(depths):1){
+    Tb = data[data[,2] == depths[i],3]
+    if(sum(is.na(Tb))/length(Tb) < 0.25){
+      if(i != 1){
+        message('Warning: Using ', depths[i], ' as the bottom.')
+      }
+      break
+    }
+  }
+
+
+
   dates = unique(data[,1])
+
+  # Put into data frame and remove NA's
+  if(!is.null(H_ice)){
+    df <- data.frame(dates, Ts, Tb, H_ice)
+  }else{
+    df <- data.frame(dates, Ts, Tb)
+  }
+  df <- na.exclude(df)
+  if(nrow(df) == 0){
+    message('Not enough data to calculate statification and/or ice statistics')
+    return()
+  }
+  dates <- df$dates
+  Ts <- df$Ts
+  Tb <- df$Tb
+  if(!is.null(H_ice)){
+    H_ice <- df$H_ice
+  }
+
+
 
   the_years <- as.POSIXlt(dates)$year+1900
   yrs <- unique(the_years)
@@ -81,7 +125,7 @@ analyse_strat <- function(data, H_ice = NULL, drho = 0.1, NH = TRUE){
   # maximum surface temperature
   # loop thru years to find Tmax and its day of year
   TsMax <- NULL
-  for(ii in unique(the_years)) {
+  for(ii in unique(strat_yrs)) {
     Ts_maxi <- which.max(Ts[strat_yrs == ii])
     TsMaxOut <- data.frame(year=ii,
                            TsMax       = Ts[strat_yrs == ii][Ts_maxi],
@@ -95,7 +139,7 @@ analyse_strat <- function(data, H_ice = NULL, drho = 0.1, NH = TRUE){
   # minimum surface temperature
   # loop thru years to find Tmax and its day of year
   TsMin <- NULL
-  for(ii in unique(the_years)) {
+  for(ii in unique(strat_yrs)) {
     Ts_mini <- which.min(Ts[strat_yrs == ii])
     TsMinOut <- data.frame(year=ii,
                            TsMin       = Ts[strat_yrs == ii][Ts_mini],
@@ -109,7 +153,7 @@ analyse_strat <- function(data, H_ice = NULL, drho = 0.1, NH = TRUE){
   # maximum bottom temperature
   # loop thru years to find Tbmax and its day of year
   TbMax <- NULL
-  for(ii in unique(the_years)) {
+  for(ii in unique(strat_yrs)) {
     Tb_maxi <- which.max(Tb[strat_yrs == ii])
     TbMaxOut <- data.frame(year=ii,
                            TbMax       = Tb[strat_yrs == ii][Tb_maxi],
@@ -123,7 +167,7 @@ analyse_strat <- function(data, H_ice = NULL, drho = 0.1, NH = TRUE){
   # minimum bottom temperature
   # loop thru years to find Tbmax and its day of year
   TbMin <- NULL
-  for(ii in unique(the_years)) {
+  for(ii in unique(strat_yrs)) {
     Tb_mini <- which.min(Tb[strat_yrs == ii])
     TbMinOut <- data.frame(year=ii,
                            TbMin       = Tb[strat_yrs == ii][Tb_mini],
@@ -169,7 +213,7 @@ analyse_strat <- function(data, H_ice = NULL, drho = 0.1, NH = TRUE){
 
     # maximum ice thickness
     IceMax <- NULL
-    for(ii in unique(the_years)) {
+    for(ii in unique(ice_yrs)) {
       Hice_maxi <- which.max(H_ice[ice_yrs == ii])
       IceMaxOut <- data.frame(year=ii,
                               HiceMax     = H_ice[ice_yrs == ii][Hice_maxi],
@@ -224,7 +268,7 @@ analyse_strat <- function(data, H_ice = NULL, drho = 0.1, NH = TRUE){
     ice_out1[match(ice_out$year, yrs),
              c("MeanIceDur","MaxIceDur","TotIceDur",
                "IceOn","IceOff","FirstFreeze","LastThaw")] <- ice_out[,-1]
-    ice_out1[,c("HiceMax","HiceMaxDay")] <- IceMax[,c("HiceMax","HiceMaxDay")]
+    ice_out1[,c("HiceMax","HiceMaxDay")] <- IceMax[which(IceMax$year %in% ice_out1$year),c("HiceMax","HiceMaxDay")]
 
     out <- data.frame(out, ice_out1[,-1])
 

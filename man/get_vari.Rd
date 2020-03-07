@@ -4,7 +4,7 @@
 \alias{get_vari}
 \title{Extract variables from NetCDF file}
 \usage{
-get_vari(ncdf, var, incl_time = TRUE, print = TRUE)
+get_vari(ncdf, var, incl_time = TRUE, long = FALSE, print = TRUE)
 }
 \arguments{
 \item{ncdf}{filepath; Name of the netCDF file to extract variable}
@@ -12,6 +12,8 @@ get_vari(ncdf, var, incl_time = TRUE, print = TRUE)
 \item{var}{character; Name of the variable to be extracted. Must match short name in netCDF file}
 
 \item{incl_time}{boolean; Add time to the first column in the dataframe. Defaults to TRUE}
+
+\item{long}{boolean; Extracts depths and converts data to long format. Only applicable to 2-D variables e.g water temperature. Defaults to FALSE.}
 
 \item{print}{logical; Print the name and units of the variable extracted, defaults to TRUE}
 }
