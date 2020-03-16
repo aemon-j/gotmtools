@@ -40,7 +40,7 @@ input_nml <- function (file, label, key, value, out_file = NULL){
   }
   spl2 <- strsplit(spl1[1], " = ")[[1]][2]
   sub = paste0(value,',' )
-  yml[ind_map] <- gsub(pattern = spl2, replacement = sub, x = yml[ind_map])
+  yml[ind_map] <- gsub(pattern = spl2, replacement = sub, x = yml[ind_map], fixed = TRUE)
   writeLines(yml, out_file)
   old_val <- gsub(" ", "", spl2, fixed = TRUE)
   message("Replaced ", label, " ", key, " ",
