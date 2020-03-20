@@ -22,11 +22,15 @@ input_yaml <- function(file = 'gotm.yaml', label, key, value, out_file = NULL){
   }
 
   #Find index of label
-  label_id <- paste0(label,':')
-  ind_label <- grep(label_id, yml)
-
-  if(length(ind_label) == 0){
-    stop(label, ' not found in ', file)
+  if(is.null(label)){
+    ind_label = 0
+  }else{
+    label_id <- paste0(label,':')
+    ind_label <- grep(label_id, yml)
+    
+    if(length(ind_label) == 0){
+      stop(label, ' not found in ', file)
+    }
   }
 
   #Find index of key to replace
@@ -45,7 +49,7 @@ input_yaml <- function(file = 'gotm.yaml', label, key, value, out_file = NULL){
   spl1 <- strsplit(yml[ind_map], c('#'))[[1]]
   if(length(spl1) == 2){
     comment <- spl1[2]
-    }
+  }
 
   #Split to extract current value and identify pattern to sub in for
   spl2 <- strsplit(spl1[1], ': ')[[1]][2]

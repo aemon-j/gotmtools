@@ -18,11 +18,15 @@ get_yaml_value <- function(file = 'gotm.yaml', label, key){
   yml <- readLines(file)
 
   #Find index of label
-  label_id <- paste0(label,':')
-  ind_label <- grep(label_id, yml)
-
-  if(length(ind_label) == 0){
-    stop(label, ' not found in ', file)
+  if(is.null(label)){
+    ind_label = 0
+  }else{
+    label_id <- paste0(label,':')
+    ind_label <- grep(label_id, yml)
+    
+    if(length(ind_label) == 0){
+      stop(label, ' not found in ', file)
+    }
   }
 
   #Find index of key to replace
