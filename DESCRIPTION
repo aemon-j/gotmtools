@@ -11,6 +11,7 @@ Depends:
     R (>= 3.0),
 	GOTMr,
     rLakeAnalyzer (>= 1.8.3)
+    rlang (>= 0.4.2)
 Imports:
     ncdf4,
     tools,
