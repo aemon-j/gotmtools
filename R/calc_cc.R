@@ -10,7 +10,7 @@
 #' @param lat numeric; Latitude position (in decimal)
 #' @param lon numeric; Longitude position (in decimal)
 #' @param elev numeric; elevation in metres above sea level
-#' @param daily logical; Is the data on a daily timestep. Defaults to FALSE
+#' @param daily deprecated; logical; Is the data on a daily timestep. Defaults to FALSE
 #' @return vector of cloud cover values which correspond to the vector of dates supplied
 #' @examples
 #'  met_file <- system.file('extdata/met_file.dat', package = 'GOTMr')
@@ -26,10 +26,15 @@
 #' @importFrom zoo na.approx
 #' @export
 
-calc_cc <- function(date, airt, relh = NULL, dewt = NULL, swr, lat, lon, elev, daily =F){
-  if(daily == T){
-    date = seq.POSIXt(from = date[1], to = (date[length(date)] +23*60*60), by = '1 hour')
+calc_cc <- function(date, airt, relh = NULL, dewt = NULL, swr, lat, lon, elev, daily = F){
+  orig_date = date
+  timestep = difftime(orig_date[2], orig_date[1], units = "secs")
+  
+  # If the time step is 24 hours or more, create artificial hourly time steps
+  if(timestep >= as.difftime(24, units = "hours")){
+    date = seq.POSIXt(from = date[1], to = (date[length(date)] + timestep - hours(1)), by = '1 hour')
   }
+  
   yday <- yday(date)
   hour <- hour(date)
   hour[hour == 0] <- 24
@@ -96,8 +101,8 @@ calc_cc <- function(date, airt, relh = NULL, dewt = NULL, swr, lat, lon, elev, d
   if(is.null(dewt)){
     dewt <- 243.04*(log(relh/100)+((17.625*airt)/(243.04+airt)))/(17.625-log(relh/100)-((17.625*airt)/(243.04+airt)))
   }
-  if(daily ==T){
-    dewt = rep(dewt, each =24)
+  if(timestep >= as.difftime(2, units = "hours")){
+    dewt = rep(dewt, each = as.numeric(difftime(orig_date[2], orig_date[1], units = "hours")))
   }
 
   Pwc = 0.85*exp(0.11+0.0614*dewt) # Precipitable atmospheric water content
@@ -114,8 +119,8 @@ calc_cc <- function(date, airt, relh = NULL, dewt = NULL, swr, lat, lon, elev, d
   Ho[dum5] = 1
 
   df = data.frame(DateTime = date,Ho = Ho)
-  if(daily == TRUE){
-    df = aggregate(list(Ho = df$Ho), by = list(DateTime = cut(df[,1], '1 day')), mean, na.rm = T)
+  if(timestep >= as.difftime(2, units = "hours")){
+    df = aggregate(list(Ho = df$Ho), by = list(DateTime = cut(df[,1], paste(timestep, "s"))), mean, na.rm = T)
   }
   df$swr =swr
 

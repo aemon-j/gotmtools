@@ -13,17 +13,25 @@
 #'input_nml(file = 'samp.nml', label = "LAKE_PARAMS", key = "depth_w_lk", value = 14, out_file = NULL)
 
 input_nml <- function (file, label, key, value, out_file = NULL){
-  yml <- readLines(file)
+  nml <- readLines(file)
   if (is.null(out_file)) {
     out_file = file
   }
-  label_id <- paste0('&',label)
-  ind_label <- grep(label_id, yml)
-  if (length(ind_label) == 0) {
-    stop(label, " not found in ", file)
+  
+  #Find index of label
+  if(is.null(label)){
+    ind_label = 0
+  }else{
+    label_id <- paste0('&',label)
+    ind_label <- grep(label_id, nml)
+    
+    if(length(ind_label) == 0){
+      stop(label, ' not found in ', file)
+    }
   }
+  
   key_id <- key # paste0('"', key, '"')
-  ind_key = grep(key_id, yml)
+  ind_key = grep(key_id, nml)
   if (length(ind_key) == 0) {
     stop(key, " not found in ", label, " in ",
          file)
@@ -34,14 +42,14 @@ input_nml <- function (file, label, key, value, out_file = NULL){
     stop(key, " not found in ", label, " in ",
          file)
   }
-  spl1 <- strsplit(yml[ind_map], c("!"))[[1]]
+  spl1 <- strsplit(nml[ind_map], c("!"))[[1]]
   if (length(spl1) == 2) {
     comment <- spl1[2]
   }
   spl2 <- strsplit(spl1[1], " = ")[[1]][2]
   sub = paste0(value,',' )
-  yml[ind_map] <- gsub(pattern = spl2, replacement = sub, x = yml[ind_map])
-  writeLines(yml, out_file)
+  nml[ind_map] <- gsub(pattern = spl2, replacement = sub, x = nml[ind_map], fixed = TRUE)
+  writeLines(nml, out_file)
   old_val <- gsub(" ", "", spl2, fixed = TRUE)
   message("Replaced ", label, " ", key, " ",
           old_val, " with ", value)
