@@ -23,7 +23,7 @@ calc_cc(date, airt, relh = NULL, dewt = NULL, swr, lat, lon, elev, daily = F)
 
 \item{elev}{numeric; elevation in metres above sea level}
 
-\item{daily}{logical; Is the data on a daily timestep. Defaults to FALSE}
+\item{daily}{deprecated; logical; Is the data on a daily timestep. Defaults to FALSE}
 }
 \value{
 vector of cloud cover values which correspond to the vector of dates supplied
