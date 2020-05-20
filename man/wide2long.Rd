@@ -19,7 +19,7 @@ Convert a dataframe in wide format to long format.
 }
 \examples{
 sim_folder <- system.file('extdata', package = 'GOTMr')
-run_gotm(sim_folder)
+GOTMr::run_gotm(sim_folder)
 out <- file.path(sim_folder, 'output', 'output.nc')
 wtemp <- get_vari(ncdf = out, var = 'temp')
 z <- get_vari(ncdf = out, var = 'z')
