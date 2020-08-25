@@ -7,7 +7,6 @@
 #' @param incl_time boolean; Add time to the first column in the dataframe. Defaults to TRUE
 #' @param ... other arguments to be passed to long_heatmap
 #' @return ggplot object; filled point plot of water temperature
-#' @importFrom glmtools get_var
 #' @examples
 #' sim_folder <- system.file('extdata', package = 'GOTMr')
 #' run_gotm(sim_folder)

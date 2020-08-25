@@ -21,6 +21,11 @@ dataframe/data.table
 \description{
 Extracts a selected parameter from the netCDF file for a certain depth and formats it into a dataframe.
 }
+\examples{
+\dontrun{
+get_vari_z("output.nc", "temp", z = -1)
+}
+}
 \author{
 Jorrit Mesman
 }

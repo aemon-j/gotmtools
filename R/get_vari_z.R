@@ -11,7 +11,7 @@
 #' @author 
 #' Jorrit Mesman
 #' @examples
-#' '\dontrun{
+#' \dontrun{
 #' get_vari_z("output.nc", "temp", z = -1)
 #' }
 #' @export
