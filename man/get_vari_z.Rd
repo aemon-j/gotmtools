@@ -16,7 +16,7 @@ get_vari_z(ncdf, var, z, constant_z = F)
 \item{constant_z;}{If set to TRUE, only the first row of the depth data is used. If FALSE, the depth data is checked for varying water levels. Defaults to FALSE.}
 }
 \value{
-dataframe/data.table
+dataframe
 }
 \description{
 Extracts a selected parameter from the netCDF file for a certain depth and formats it into a dataframe.
