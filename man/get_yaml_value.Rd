@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_yaml_value.R
 \name{get_yaml_value}
 \alias{get_yaml_value}
-\title{Extract values frpm yaml file}
+\title{Extract values from yaml file}
 \usage{
 get_yaml_value(file = "gotm.yaml", label, key)
 }
@@ -12,10 +12,6 @@ get_yaml_value(file = "gotm.yaml", label, key)
 \item{label}{string; which corresponds to section where the key is located}
 
 \item{key}{string; name of key in which to input the value}
-
-\item{value}{string; to be input into the key/value pair. Note boolean values must be input as 'true'/'false' as per the yaml format}
-
-\item{out_file}{filepath; to write the output yaml file (optional); defaults to overwriting file if not specified}
 }
 \description{
 Inputs values into yaml file by locating the label and key within the yaml file. Preserves comments (#) if present. NOTE: this does not use a yaml parser so if there are yaml formatting errors this function will not pick them up.

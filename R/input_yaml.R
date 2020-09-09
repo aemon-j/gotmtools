@@ -16,7 +16,10 @@
 
 input_yaml <- function(file = 'gotm.yaml', label, key, value, out_file = NULL){
   yml <- readLines(file)
-
+  
+  # Prevent from finding labels/keys in comments
+  yml_no_comments <- unname(sapply(yml, function(x) strsplit(x, "#")[[1]][1]))
+  
   if(is.null(out_file)){
     out_file = file
   }
@@ -26,7 +29,7 @@ input_yaml <- function(file = 'gotm.yaml', label, key, value, out_file = NULL){
     ind_label = 0
   }else{
     label_id <- paste0(label,':')
-    ind_label <- grep(label_id, yml)
+    ind_label <- grep(label_id, yml_no_comments)
     
     if(length(ind_label) == 0){
       stop(label, ' not found in ', file)
@@ -35,7 +38,7 @@ input_yaml <- function(file = 'gotm.yaml', label, key, value, out_file = NULL){
 
   #Find index of key to replace
   key_id <- paste0(' ',key, ':')
-  ind_key = grep(key_id, yml)
+  ind_key = grep(key_id, yml_no_comments)
   if(length(ind_key) == 0){
     stop(key, ' not found in ', label, ' in ', file)
   }
