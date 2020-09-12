@@ -9,7 +9,6 @@ Description: Easily visualise inputs for GOTM and allow interaction with editing
 License: GPL3
 Depends:
     R (>= 3.0),
-	GOTMr,
     rLakeAnalyzer (>= 1.8.3)
 Imports:
   ncdf4,
@@ -32,6 +31,7 @@ Imports:
 	zoo
 Suggests:
     testthat,
+	GOTMr,
     knitr,
     rmarkdown
 Encoding: UTF-8
