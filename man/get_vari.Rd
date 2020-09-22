@@ -13,7 +13,8 @@ get_vari(ncdf, var, incl_time = TRUE, print = TRUE)
 
 \item{incl_time}{boolean; Add time to the first column in the dataframe. Defaults to TRUE}
 
-\item{print}{logical; Print the name and units of the variable extracted, defaults to TRUE}
+\item{print}{logical; Print the name and units of the variable extracted, defaults to TRUE
+If coordinates are not in ncdf use print = FALSE}
 }
 \value{
 dataframe in the same format as the observation file with the surface in the top column and the bottom in the last column.
