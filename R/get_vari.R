@@ -35,7 +35,14 @@ get_vari <- function(ncdf, var, incl_time = TRUE, print = TRUE){
     thour <- as.integer(unlist(tdstr)[1])
     tmin <- as.integer(unlist(tdstr)[2])
     origin <- as.POSIXct(paste0(tyear, "-", tmonth,
-                                "-", tday, ' ', thour, ':', tmin), format = "%Y-%m-%d %H:%M", tz = "UTC")
+                                "-", tday, ' ', thour, ':', tmin),
+                         format = "%Y-%m-%d %H:%M", tz = "UTC")
+    if( step == "hours") {
+      tim <- tim * 60 * 60
+    }
+    if( step == "minutes") {
+      tim <- tim * 60
+    }
     time = as.POSIXct(tim, origin = origin, tz = "UTC")
   }
   var1 = ncvar_get(fid, var)
