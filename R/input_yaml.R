@@ -16,7 +16,10 @@
 
 input_yaml <- function(file = 'gotm.yaml', label, key, value, out_file = NULL){
   yml <- readLines(file)
-
+  
+  # Prevent from finding labels/keys in comments
+  yml_no_comments <- unname(sapply(yml, function(x) strsplit(x, "#")[[1]][1]))
+  
   if(is.null(out_file)){
     out_file = file
   }
@@ -26,7 +29,7 @@ input_yaml <- function(file = 'gotm.yaml', label, key, value, out_file = NULL){
     ind_label = 0
   }else{
     label_id <- paste0(label,':')
-    ind_label <- grep(label_id, yml)
+    ind_label <- grep(label_id, yml_no_comments)
     
     if(length(ind_label) == 0){
       stop(label, ' not found in ', file)
@@ -35,7 +38,7 @@ input_yaml <- function(file = 'gotm.yaml', label, key, value, out_file = NULL){
 
   #Find index of key to replace
   key_id <- paste0(' ',key, ':')
-  ind_key = grep(key_id, yml)
+  ind_key = grep(key_id, yml_no_comments)
   if(length(ind_key) == 0){
     stop(key, ' not found in ', label, ' in ', file)
   }
@@ -52,7 +55,12 @@ input_yaml <- function(file = 'gotm.yaml', label, key, value, out_file = NULL){
   }
 
   #Split to extract current value and identify pattern to sub in for
-  spl2 <- strsplit(spl1[1], ': ')[[1]][2]
+  spl_tmp <- strsplit(spl1[1], ": ")[[1]]
+  if(length(spl_tmp) == 1){
+    spl2 <- ""
+  }else{
+    spl2 <- spl_tmp[2]
+  }
 
   # if(!is.na(comment)){
     # sub = paste0(' ', value,' #', comment)
@@ -61,8 +69,13 @@ input_yaml <- function(file = 'gotm.yaml', label, key, value, out_file = NULL){
   # }
 
   #Sub in new value
-  yml[ind_map] <- gsub(pattern = spl2, replacement = sub,x = yml[ind_map])
-
+  # Addition of \Q and \E is to avoid errors in case spl2 contains
+  # characters that could be interpreted as regular expressions
+  # see ?base::regex
+  yml[ind_map] <- gsub(pattern = paste0("\\Q", spl1[1], "\\E"),
+                       replacement = paste0(spl_tmp[1], ": ", sub),
+                       x = yml[ind_map])
+  
   #Write to file
   writeLines(yml, out_file)
   old_val <- gsub(" ", "", spl2, fixed = TRUE) #remove white space for printing

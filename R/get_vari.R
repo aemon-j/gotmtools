@@ -6,6 +6,7 @@
 #' @param var character; Name of the variable to be extracted. Must match short name in netCDF file
 #' @param incl_time boolean; Add time to the first column in the dataframe. Defaults to TRUE
 #' @param print logical; Print the name and units of the variable extracted, defaults to TRUE
+#' If coordinates are not in ncdf use print = FALSE
 #' @return dataframe in the same format as the observation file with the surface in the top column and the bottom in the last column.
 #' @importFrom ncdf4 nc_open
 #' @importFrom ncdf4 nc_close
@@ -34,7 +35,14 @@ get_vari <- function(ncdf, var, incl_time = TRUE, print = TRUE){
     thour <- as.integer(unlist(tdstr)[1])
     tmin <- as.integer(unlist(tdstr)[2])
     origin <- as.POSIXct(paste0(tyear, "-", tmonth,
-                                "-", tday, ' ', thour, ':', tmin), format = "%Y-%m-%d %H:%M", tz = "UTC")
+                                "-", tday, ' ', thour, ':', tmin),
+                         format = "%Y-%m-%d %H:%M", tz = "UTC")
+    if( step == "hours") {
+      tim <- tim * 60 * 60
+    }
+    if( step == "minutes") {
+      tim <- tim * 60
+    }
     time = as.POSIXct(tim, origin = origin, tz = "UTC")
   }
   var1 = ncvar_get(fid, var)
@@ -59,10 +67,10 @@ get_vari <- function(ncdf, var, incl_time = TRUE, print = TRUE){
       var1 <- data.frame(time, var1)
     }
   }
-  mat = matrix(data = c(var, lnam, tunits$units, tunits$coordinates),
-               dimnames = list(c("short_name", "long_name",
-                                 "units", "dimensions"), c()))
   if (print == TRUE) {
+    mat = matrix(data = c(var, lnam, tunits$units, tunits$coordinates),
+                 dimnames = list(c("short_name", "long_name",
+                                   "units", "dimensions"), c()))
     message("Extracted ", var, " from ", ncdf)
     print(mat)
   }

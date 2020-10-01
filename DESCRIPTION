@@ -9,17 +9,15 @@ Description: Easily visualise inputs for GOTM and allow interaction with editing
 License: GPL3
 Depends:
     R (>= 3.0),
-	GOTMr,
     rLakeAnalyzer (>= 1.8.3)
 Imports:
-    ncdf4,
-    tools,
-    akima,
-    lazyeval,
-    dplyr,
-    ggplot2,
+  ncdf4,
+  tools,
+  akima,
+  lazyeval,
+  dplyr,
+  ggplot2,
 	hydroGOF,
-	glmtools,
 	reshape2,
 	RSQLite,
 	XML,
@@ -33,8 +31,9 @@ Imports:
 	zoo
 Suggests:
     testthat,
+	GOTMr,
     knitr,
     rmarkdown
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0

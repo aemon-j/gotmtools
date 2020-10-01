@@ -24,17 +24,17 @@ sum_stat <- function(mod, obs, depth = FALSE, na.rm = TRUE, depth.range = NULL){
     df <- na.exclude(df)
 
     # analyse strat
-    o.strat <- analyse_strat(df[,c(1,2,4)])
-    m.strat <- analyse_strat(df[,c(1:3)])
-
-    diff.strat <- o.strat
-    for(i in 1:nrow(o.strat)){
-      for(j in 2:ncol(o.strat)){
-        diff.strat[i,j] <- m.strat[i,j] - o.strat[i,j]
-      }
-    }
-    diff <- t(as.data.frame(colMeans(diff.strat[,-1])))
-    rownames(diff) <- NULL
+    # o.strat <- analyse_strat(df[,c(1,2,4)])
+    # m.strat <- analyse_strat(df[,c(1:3)])
+    #
+    # diff.strat <- o.strat
+    # for(i in 1:nrow(o.strat)){
+    #   for(j in 2:ncol(o.strat)){
+    #     diff.strat[i,j] <- m.strat[i,j] - o.strat[i,j]
+    #   }
+    # }
+    # diff <- t(as.data.frame(colMeans(diff.strat[,-1])))
+    # rownames(diff) <- NULL
 
 
     colnames(df)[3:4] <- c('mod', 'obs')
@@ -55,7 +55,7 @@ sum_stat <- function(mod, obs, depth = FALSE, na.rm = TRUE, depth.range = NULL){
                                Variance_mod = var_mod, SD_obs = SD_obs, SD_mod = SD_mod,
                                Covariance = cov, #Correlation =cor,
                                Bias = bias, MAE = mae, RMSE = rmse, NSE = nse, lnlikelihood = lnlikelihood, row.names = c())
-    summary_stats <- cbind.data.frame(summary_stats, diff)
+    # summary_stats <- cbind.data.frame(summary_stats, diff)
     return(summary_stats)
   }else{
     dif = mod- obs

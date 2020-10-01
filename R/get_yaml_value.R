@@ -1,11 +1,9 @@
-#' @title Extract values frpm yaml file
+#' @title Extract values from yaml file
 #' @description
 #'Inputs values into yaml file by locating the label and key within the yaml file. Preserves comments (#) if present. NOTE: this does not use a yaml parser so if there are yaml formatting errors this function will not pick them up.
 #' @param file filepath; to .yaml which you wish to edit
 #' @param label string; which corresponds to section where the key is located
 #' @param key string; name of key in which to input the value
-#' @param value string; to be input into the key/value pair. Note boolean values must be input as 'true'/'false' as per the yaml format
-#' @param out_file filepath; to write the output yaml file (optional); defaults to overwriting file if not specified
 #' @export
 #' @author
 #'Tadhg Moore
@@ -16,13 +14,16 @@
 #'
 get_yaml_value <- function(file = 'gotm.yaml', label, key){
   yml <- readLines(file)
+  
+  # Prevent from finding labels/keys in comments
+  yml_no_comments <- unname(sapply(yml, function(x) strsplit(x, "#")[[1]][1]))
 
   #Find index of label
   if(is.null(label)){
     ind_label = 0
   }else{
     label_id <- paste0(label,':')
-    ind_label <- grep(label_id, yml)
+    ind_label <- grep(label_id, yml_no_comments)
     
     if(length(ind_label) == 0){
       stop(label, ' not found in ', file)
@@ -31,7 +32,7 @@ get_yaml_value <- function(file = 'gotm.yaml', label, key){
 
   #Find index of key to replace
   key_id <- paste0(' ',key, ':')
-  ind_key = grep(key_id, yml)
+  ind_key = grep(key_id, yml_no_comments)
   if(length(ind_key) == 0){
     stop(key, ' not found in ', label, ' in ', file)
   }
