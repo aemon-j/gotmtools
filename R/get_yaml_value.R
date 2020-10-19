@@ -31,12 +31,12 @@ get_yaml_value <- function(file = 'gotm.yaml', label, key){
   }
 
   #Find index of key to replace
-  key_id <- paste0(' ',key, ':')
-  ind_key = grep(paste0("\\b", key_id, "\\b"), yml_no_comments)
+  key_id <- paste0('   ',key, ':')
+  ind_key <- grep(key_id, yml_no_comments)
   if(length(ind_key) == 0){
     stop(key, ' not found in ', label, ' in ', file)
   }
-  ind_key = ind_key[ind_key > ind_label]
+  ind_key <- ind_key[ind_key > ind_label]
   ind_map <- ind_key[which.min(ind_key - ind_label)]
   if(length(ind_map) == 0){
     stop(key, ' not found in ', label, ' in ', file)
