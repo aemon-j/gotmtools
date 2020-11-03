@@ -23,7 +23,7 @@ get_yaml_value <- function(file = 'gotm.yaml', label, key){
     ind_label = 0
   }else{
     label_id <- paste0(label,':')
-    ind_label <- grep(paste0("\\b", label_id, "\\b"), yml_no_comments)
+    ind_label <- grep(paste0("\\b", label_id), yml_no_comments)
     
     if(length(ind_label) == 0){
       stop(label, ' not found in ', file)
