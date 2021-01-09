@@ -39,7 +39,7 @@ input_nml <- function (file, label, key, value, out_file = NULL){
   ind_key = ind_key[ind_key > ind_label]
   if (length(ind_key) > 1){
    spl0 <- strsplit(nml[ind_key], c("!"))
-   sbspl <- sub("\\=.*", "", ts1)
+   sbspl <- sub("\\=.*", "", spl0)
    idx <- which(key_id == gsub(" ", "", sbspl, fixed = TRUE))
    ind_map <- ind_key[idx]
   } else {
