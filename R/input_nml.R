@@ -37,7 +37,13 @@ input_nml <- function (file, label, key, value, out_file = NULL){
          file)
   }
   ind_key = ind_key[ind_key > ind_label]
-  ind_map <- ind_key[which.min(ind_key - ind_label)]
+  # ind_map <- ind_key[which.min(ind_key - ind_label)]
+  if (length(ind_key) > 1){
+   spl0 <- strsplit(nml[ind_key], c("!"))
+   sbspl <- sub("\\=.*", "", ts1)
+   idx <- which(key_id == gsub(" ", "", sbspl, fixed = TRUE))
+   ind_map <- ind_key[idx]
+  }
   if (length(ind_map) == 0) {
     stop(key, " not found in ", label, " in ",
          file)
