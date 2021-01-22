@@ -32,7 +32,7 @@ calc_cc <- function(date, airt, relh = NULL, dewt = NULL, swr, lat, lon, elev, d
   
   # If the time step is 24 hours or more, create artificial hourly time steps
   if(timestep >= as.difftime(24, units = "hours")){
-    date = seq.POSIXt(from = date[1], to = (date[length(date)] + timestep - hours(1)), by = '1 hour')
+    date = seq.POSIXt(from = date[1], to = (date[length(date)] + timestep - 1 * 60 * 60), by = '1 hour')
   }
   
   yday <- yday(date)
