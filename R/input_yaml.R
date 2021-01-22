@@ -37,7 +37,7 @@ input_yaml <- function(file = 'gotm.yaml', label, key, value, out_file = NULL){
   }
 
   #Find index of key to replace
-  key_id <- paste0(' ',key, ':')
+  key_id <- paste0('\\b',key, ':')
   ind_key = grep(key_id, yml_no_comments)
   if(length(ind_key) == 0){
     stop(key, ' not found in ', label, ' in ', file)
