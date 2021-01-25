@@ -1,16 +1,3 @@
-#' Input values into nml file
-#'
-#'Inputs values into nml file by locating the label and key within the nml file. Preserves comments (!) if present. NOTE: this does not use a nml parser so if there are nml formatting errors this function will not pick them up.
-#' @param file filepath; to nml file which you wish to edit
-#' @param label string; which corresponds to section where the key is located
-#' @param key string; name of key in which to input the value
-#' @param value string; to be input into the key/value pair. Note boolean values must be input as 'true'/'false' as per the nml format
-#' @param out_file filepath; to write the output nml file (optional); defaults to overwriting file if not specified
-#' @export
-#' @author
-#'Tadhg Moore
-#' @examples
-#'input_nml(file = 'samp.nml', label = "LAKE_PARAMS", key = "depth_w_lk", value = 14, out_file = NULL)
 
 input_nml <- function (file, label, key, value, out_file = NULL){
   nml <- readLines(file)
@@ -38,13 +25,18 @@ input_nml <- function (file, label, key, value, out_file = NULL){
   }
   ind_key = ind_key[ind_key > ind_label]
   if (length(ind_key) > 1){
-   spl0 <- strsplit(nml[ind_key], c("!"))
-   sbspl <- sub("\\=.*", "", spl0)
-   idx <- which(key_id == gsub(" ", "", sbspl, fixed = TRUE))
-   ind_map <- ind_key[idx]
-  } else {
-    ind_map <- ind_key[which.min(ind_key - ind_label)]
-  }
+    spl0 <- strsplit(nml[ind_key], c("!"))
+    spl01 <- unlist(spl0)
+    spl02 <- c()
+    for (ix in 1:length(spl0)){
+      spl02 <- append(spl02, spl01[(2 * ix) - 1])
+    }
+    sbspl <- sub("\\=.*", "", spl02)
+    idx <- which(key_id == gsub(" ", "", sbspl, fixed = TRUE))
+    ind_map <- ind_key[idx]
+  } # else {
+  #   ind_map <- ind_key[which.min(ind_key - ind_label)]
+  # }
   if (length(ind_map) == 0) {
     stop(key, " not found in ", label, " in ",
          file)
