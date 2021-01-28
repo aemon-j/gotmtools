@@ -10,8 +10,6 @@
 #' @author
 #'Tadhg Moore
 #' @examples
-#'input_nml(file = 'samp.nml', label = "LAKE_PARAMS", key = "depth_w_lk", value = 14, out_file = NULL)
-
 input_nml <- function (file, label, key, value, out_file = NULL){
   nml <- readLines(file)
   if (is.null(out_file)) {
@@ -38,10 +36,16 @@ input_nml <- function (file, label, key, value, out_file = NULL){
   }
   ind_key = ind_key[ind_key > ind_label]
   if (length(ind_key) > 1){
-   spl0 <- strsplit(nml[ind_key], c("!"))
-   sbspl <- sub("\\=.*", "", spl0)
-   idx <- which(key_id == gsub(" ", "", sbspl, fixed = TRUE))
-   ind_map <- ind_key[idx]
+    spl0 <- strsplit(nml[ind_key], c("!"))
+    lensp <- c()
+    for (ix in 1:length(spl0)){
+      lensp <- append(lensp, length(spl0[ix]))
+    }
+    spl01 <- unlist(spl0)
+    spl02 <- spl01[cumsum(c(1,lensp[1:(length(lensp) - 1)]))]
+    sbspl <- sub("\\=.*", "", spl02)
+    idx <- which(key_id == gsub(" ", "", sbspl, fixed = TRUE))
+    ind_map <- ind_key[idx]
   } else {
     ind_map <- ind_key[which.min(ind_key - ind_label)]
   }
