@@ -16,10 +16,10 @@
 
 input_yaml <- function(file = 'gotm.yaml', label, key, value, out_file = NULL){
   yml <- readLines(file)
-  
+
   # Prevent from finding labels/keys in comments
   yml_no_comments <- unname(sapply(yml, function(x) strsplit(x, "#")[[1]][1]))
-  
+
   if(is.null(out_file)){
     out_file = file
   }
@@ -30,14 +30,14 @@ input_yaml <- function(file = 'gotm.yaml', label, key, value, out_file = NULL){
   }else{
     label_id <- paste0(label,':')
     ind_label <- grep(label_id, yml_no_comments)
-    
+
     if(length(ind_label) == 0){
       stop(label, ' not found in ', file)
     }
   }
 
   #Find index of key to replace
-  key_id <- paste0(' ',key, ':')
+  key_id <- paste0('\\b',key, ':')
   ind_key = grep(key_id, yml_no_comments)
   if(length(ind_key) == 0){
     stop(key, ' not found in ', label, ' in ', file)
@@ -63,9 +63,9 @@ input_yaml <- function(file = 'gotm.yaml', label, key, value, out_file = NULL){
   }
 
   # if(!is.na(comment)){
-    # sub = paste0(' ', value,' #', comment)
+  # sub = paste0(' ', value,' #', comment)
   # }else{
-    sub = paste0(value,' ')
+  sub = paste0(value,' ')
   # }
 
   #Sub in new value
@@ -75,7 +75,7 @@ input_yaml <- function(file = 'gotm.yaml', label, key, value, out_file = NULL){
   yml[ind_map] <- gsub(pattern = paste0("\\Q", spl1[1], "\\E"),
                        replacement = paste0(spl_tmp[1], ": ", sub),
                        x = yml[ind_map])
-  
+
   #Write to file
   writeLines(yml, out_file)
   old_val <- gsub(" ", "", spl2, fixed = TRUE) #remove white space for printing

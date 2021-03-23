@@ -2,23 +2,31 @@
 % Please edit documentation in R/get_yaml_value.R
 \name{get_yaml_value}
 \alias{get_yaml_value}
-\title{Extract values from yaml file}
+\title{Get a value from the loaded yaml file}
 \usage{
-get_yaml_value(file = "gotm.yaml", label, key)
+get_yaml_value(yaml, ...)
 }
 \arguments{
-\item{file}{filepath; to .yaml which you wish to edit}
+\item{yaml}{list; loaded using `read_yaml()`}
 
-\item{label}{string; which corresponds to section where the key is located}
-
-\item{key}{string; name of key in which to input the value}
+\item{...}{character string with the keys from the yaml file. They need to be in consecutive order}
+}
+\value{
+list with updated yaml parameters
 }
 \description{
-Inputs values into yaml file by locating the label and key within the yaml file. Preserves comments (#) if present. NOTE: this does not use a yaml parser so if there are yaml formatting errors this function will not pick them up.
+Get a value from a loaded yaml file.
 }
 \examples{
-yaml_file <- system.file('extdata/gotm.yaml', package = 'GOTMr')
-get_yaml_value(file = yaml_file, label = 'airp', key = 'file')
+
+\dontrun{
+config_file <- system.file("extdata/feeagh/LakeEnsemblR.yaml", package = "LakeEnsemblR")
+
+yaml <- read_yaml(config_file)
+
+lat <- get_yaml_value(yaml, "location", "latitude")
+kmin_init <- get_yaml_value(yaml, "calibration", "GOTM", "turb_param/k_min", "initial")
+}
 }
 \author{
 Tadhg Moore
