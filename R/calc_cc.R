@@ -24,19 +24,20 @@
 #'  plot(cc)
 #' @importFrom stats aggregate
 #' @importFrom zoo na.approx
+#' @importFrom lubridate hours hour yday
 #' @export
 
-calc_cc <- function(date, airt, relh = NULL, dewt = NULL, swr, lat, lon, elev, daily = F){
+calc_cc <- function(date, airt, relh = NULL, dewt = NULL, swr, lat, lon, elev, daily = FALSE){
   orig_date = date
   timestep = difftime(orig_date[2], orig_date[1], units = "secs")
-  
+
   # If the time step is 24 hours or more, create artificial hourly time steps
   if(timestep >= as.difftime(24, units = "hours")){
-    date = seq.POSIXt(from = date[1], to = (date[length(date)] + timestep - hours(1)), by = '1 hour')
+    date = seq.POSIXt(from = date[1], to = (date[length(date)] + timestep - lubridate::hours(1)), by = '1 hour')
   }
-  
-  yday <- yday(date)
-  hour <- hour(date)
+
+  yday <- lubridate::yday(date)
+  hour <- lubridate::hour(date)
   hour[hour == 0] <- 24
 
   std.mer = seq(-90,90, 15)
@@ -99,6 +100,9 @@ calc_cc <- function(date, airt, relh = NULL, dewt = NULL, swr, lat, lon, elev, d
 
   # Dewpoint temperature
   if(is.null(dewt)){
+    if(any(relh <= 0 | relh > 100)) {
+      stop("Some of the relative humidity values are outside the bounds 0-100. Please inspect values.")
+    }
     dewt <- 243.04*(log(relh/100)+((17.625*airt)/(243.04+airt)))/(17.625-log(relh/100)-((17.625*airt)/(243.04+airt)))
   }
   if(timestep >= as.difftime(2, units = "hours")){

@@ -4,7 +4,17 @@
 \alias{calc_cc}
 \title{Calculate cloud cover}
 \usage{
-calc_cc(date, airt, relh = NULL, dewt = NULL, swr, lat, lon, elev, daily = F)
+calc_cc(
+  date,
+  airt,
+  relh = NULL,
+  dewt = NULL,
+  swr,
+  lat,
+  lon,
+  elev,
+  daily = FALSE
+)
 }
 \arguments{
 \item{date}{vector; Dates in as.POSixct class}
