@@ -1,9 +1,9 @@
 Package: gotmtools
 Type: Package
 Title: Tools to work with GOTM input data and also process the output data
-Version: 0.1.0
+Version: 0.1.1
 Author: Tadhg Moore
-Maintainer: Tadhg Moore <tadhg.moore@dkit.ie>
+Maintainer: Tadhg Moore <tadhg.moore6@gmail.com>
 Description: Easily visualise inputs for GOTM and allow interaction with editing GOTM input files.
     Works in tandem with GOTMr to easily document your modelling workflow. Easy to extract data from the netCDF files and compare modelled data to field data.
 License: GPL3
@@ -30,10 +30,10 @@ Imports:
 	readr,
 	zoo
 Suggests:
-    testthat,
+  testthat,
 	GOTMr,
-    knitr,
-    rmarkdown
+  knitr,
+  rmarkdown
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.3
