@@ -8,8 +8,7 @@
 #' @param depth.range vector; vector with a depth range to extract RMSE at certain depths. Upper limit first e.g. c(-5,-10). Defaults to whole water column.
 #' @param tz Timezone string to be supplied to as.POSIXct. Defaults to 'UTC'. This often can be left to the default unless timezone support is specifically required.
 #' @return data frame; time series of RMSE
-#' @importFrom hydroGOF NSE
-#' @importFrom hydroGOF rmse
+#'
 #' @export
 ts_stat <- function(mod, obs,depth.range= NULL,stat = 'pearson', tz = 'UTC'){
   tims = unique(obs[,1])
