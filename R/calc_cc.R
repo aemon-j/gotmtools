@@ -99,6 +99,10 @@ calc_cc <- function(date, airt, relh = NULL, dewt = NULL, swr, lat, lon, elev, d
 
   # Dewpoint temperature
   if(is.null(dewt)){
+    if(any(relh <= 0.0)){
+      warning("Relative humidity values of 0.0% detected; will cause error!")
+    }
+    
     dewt <- 243.04*(log(relh/100)+((17.625*airt)/(243.04+airt)))/(17.625-log(relh/100)-((17.625*airt)/(243.04+airt)))
   }
   if(timestep >= as.difftime(2, units = "hours")){
